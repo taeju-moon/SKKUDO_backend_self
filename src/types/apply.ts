@@ -1,6 +1,8 @@
+import { Types } from 'mongoose';
+
 export interface Applier {
-  id: string;
-  clubId: string;
+  _id: Types.ObjectId;
+  clubId: Types.ObjectId;
   documentQuestions: string[]; //서류 질문
   interviewQuestions: string[]; //면접 질문
   appliedUsers: AppliedUser[];
@@ -9,8 +11,8 @@ export interface Applier {
 }
 
 export interface AppliedUser {
-  id: string;
-  clubId: string;
+  _id: Types.ObjectId;
+  clubId: Types.ObjectId;
   studentId: string;
   name: string;
   major: string;

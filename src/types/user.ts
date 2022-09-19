@@ -1,15 +1,9 @@
-import { role, location } from './common';
-
-export interface Column {
-  key: string;
-  valueType: string;
-  value: any;
-}
+import { Role, Location, Column } from './common';
 
 export interface RegisteredClub {
   id: string;
   clubId: string;
-  role: role;
+  role: Role;
   moreColumns: Column[];
   createdAt: Date;
   updatedAt: Date;
@@ -17,7 +11,7 @@ export interface RegisteredClub {
 
 export interface User {
   id: string;
-  location: location;
+  location: Location;
   studentId: string;
   password: string;
   registeredClubs: RegisteredClub[];

@@ -1,9 +1,12 @@
+import { Location } from './common';
+import { Types } from 'mongoose';
+
 export type RecruitType = '정규모집' | '상시모집';
 
 export interface Club {
-  id: string;
+  _id: Types.ObjectId;
   name: string;
-  location: '인사캠' | '자과캠';
+  location: Location;
   type: ClubType;
   //description
   recruitType: RecruitType;
@@ -14,7 +17,7 @@ export interface Club {
 }
 
 export interface ClubType {
-  id: string;
+  _id: Types.ObjectId;
   name: string; //프로그래밍, 경영
   createdAt: Date;
   updatedAt: Date;

@@ -1,17 +1,18 @@
 import { User } from './user';
+import { Types } from 'mongoose';
 
 export interface NoticeTag {
-  id: string;
-  clubId: string;
+  _id: Types.ObjectId;
+  clubId: Types.ObjectId;
   name: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface Notice {
-  id: string;
+  _id: Types.ObjectId;
   writer: User;
-  clubId: string; //동아리 ID
+  clubId: Types.ObjectId; //동아리 ID
   title: string; //제목
   content: string; //내용
   tags: NoticeTag[]; //태그

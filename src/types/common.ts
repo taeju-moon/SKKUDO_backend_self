@@ -1,3 +1,12 @@
-export type role = '회장단' | '운영진' | '부원';
+import { Types } from 'mongoose';
 
-export type location = '인사캠' | '자과캠';
+export type Role = '회장단' | '운영진' | '부원';
+
+export type Location = '인사캠' | '자과캠';
+
+export interface Column {
+  _id: Types.ObjectId;
+  key: string;
+  valueType: string;
+  value: any;
+}
