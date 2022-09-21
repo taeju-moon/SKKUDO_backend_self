@@ -1,4 +1,4 @@
-import { Location } from './common';
+import { Location, Column } from './common';
 import { Types } from 'mongoose';
 
 export type RecruitType = '정규모집' | '상시모집';
@@ -8,6 +8,7 @@ export interface Club {
   name: string;
   location: Location;
   type: ClubType;
+  userColumns: Column[];
   //description
   recruitType: RecruitType;
   recruitStart: Date | null; //모집 시작일

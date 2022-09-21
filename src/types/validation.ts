@@ -1,8 +1,9 @@
 import { Role } from './common';
+import { Types } from 'mongoose';
 
 export interface Validation {
-  id: string;
-  clubId: string;
+  _id: Types.ObjectId;
+  clubId: Types.ObjectId;
   noticeRead: Role;
   noticeWrite: Role;
   userRead: Role;

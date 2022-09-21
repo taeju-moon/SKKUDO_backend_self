@@ -1,24 +1,25 @@
 import { User } from './user';
+import { Types } from 'mongoose';
 
 export interface ToDoTag {
-  id: string;
-  clubId: string;
+  _id: Types.ObjectId;
+  clubId: Types.ObjectId;
   name: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface ToDo {
-  id: string;
-  clubId: string;
+  _id: Types.ObjectId;
+  clubId: Types.ObjectId;
   writer: User;
   title: string;
   content: string;
   date: Date;
   startTime: Date;
   endTime: Date;
-  attendingUsers: User[];
-  tags: ToDoTag;
+  attendingUsers: string[]; //유저들의 studentId의 배열
+  tags: ToDoTag[];
   createdAt: Date;
   updatedAt: Date;
 }

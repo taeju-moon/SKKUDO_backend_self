@@ -2,6 +2,7 @@ import { Club as ClubInterface, RecruitType } from '../../types/club';
 import { clubTypeSchema } from './ClubType';
 import { Location } from '../../types/common';
 import { Schema, model } from 'mongoose';
+import { columnSchema } from '../common/Column';
 
 const location: Location[] = ['인사캠', '자과캠'];
 const recruitType: RecruitType[] = ['상시모집', '정규모집'];
@@ -31,6 +32,9 @@ const clubSchema = new Schema<ClubInterface>({
       values: recruitType,
       message: '모집유형은 정규모집 또는 상시모집입니다.',
     },
+  },
+  userColumns: {
+    type: [columnSchema],
   },
   recruitStart: {
     type: Date,

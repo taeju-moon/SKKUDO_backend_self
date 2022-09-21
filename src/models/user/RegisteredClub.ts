@@ -1,0 +1,30 @@
+import { Schema, model } from 'mongoose';
+import { columnSchema } from '../common/Column';
+import { RegisteredClub as RegisteredClubInterface } from '../../types/user';
+import { Role } from '../../types/common';
+
+const role: Role[] = ['회장단', '운영진', '부원'];
+
+const registeredClubShcema = new Schema<RegisteredClubInterface>({
+  clubId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  role: {
+    type: String,
+    enum: {
+      values: role,
+      message: '권한은 회장단, 운영진 또는 부원이어야 합니다.',
+    },
+  },
+  moreColumns: [{ column: columnSchema, value: String }],
+  createdAt: Date,
+  updatedAt: Date,
+});
+
+const RegisteredClub = model<RegisteredClubInterface>(
+  'RegisteredClub',
+  registeredClubShcema
+);
+
+export { RegisteredClub, registeredClubShcema };

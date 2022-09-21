@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { NoticeTag as NoticeTagInterface } from '../../types/notice';
-import { NoticeTag } from './../../types/notice';
+import { NoticeTag } from '../../types/notice';
 
 const noticeTagSchema = new Schema<NoticeTagInterface>({
   clubId: {

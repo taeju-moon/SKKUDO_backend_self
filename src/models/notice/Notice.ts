@@ -20,12 +20,8 @@ const noticeSchema = new Schema<NoticeInterface>({
   tags: {
     type: [noticeTagSchema],
   },
-  createdAt: {
-    type: Date,
-  },
-  updatedAt: {
-    type: Date,
-  },
+  createdAt: Date,
+  updatedAt: Date,
 });
 
 const Notice = model<NoticeInterface>('Notice', noticeSchema);
