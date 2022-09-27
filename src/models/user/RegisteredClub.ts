@@ -3,7 +3,7 @@ import { columnSchema } from '../common/Column';
 import { RegisteredClub as RegisteredClubInterface } from '../../types/user';
 import { Role } from '../../types/common';
 
-const role: Role[] = ['회장단', '운영진', '부원'];
+const role: Role[] = ['회장', '부회장', '운영진', '부원'];
 
 const registeredClubShcema = new Schema<RegisteredClubInterface>({
   clubId: {

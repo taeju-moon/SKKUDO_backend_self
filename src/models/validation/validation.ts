@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { Role } from '../../types/common';
 import { Validation as ValidationInterface } from '../../types/validation';
 
-const roles: Role[] = ['회장단', '운영진', '부원'];
+const roles: Role[] = ['회장', '부회장', '운영진', '부원'];
 
 const validationSchema = new Schema<ValidationInterface>({
   clubId: {
@@ -13,7 +13,7 @@ const validationSchema = new Schema<ValidationInterface>({
     type: String,
     enum: {
       values: roles,
-      message: '회장단, 운영진, 부원 중 하나여야 합니다.',
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
     },
     default: '부원',
   },
@@ -21,7 +21,7 @@ const validationSchema = new Schema<ValidationInterface>({
     type: String,
     enum: {
       values: roles,
-      message: '회장단, 운영진, 부원 중 하나여야 합니다.',
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
     },
     default: '운영진',
   },
@@ -29,7 +29,7 @@ const validationSchema = new Schema<ValidationInterface>({
     type: String,
     enum: {
       values: roles,
-      message: '회장단, 운영진, 부원 중 하나여야 합니다.',
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
     },
     default: '운영진',
   },
@@ -37,7 +37,7 @@ const validationSchema = new Schema<ValidationInterface>({
     type: String,
     enum: {
       values: roles,
-      message: '회장단, 운영진, 부원 중 하나여야 합니다.',
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
     },
     default: '운영진',
   },
@@ -45,15 +45,15 @@ const validationSchema = new Schema<ValidationInterface>({
     type: String,
     enum: {
       values: roles,
-      message: '회장단, 운영진, 부원 중 하나여야 합니다.',
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
     },
-    default: '회장단',
+    default: '부회장',
   },
   todoRead: {
     type: String,
     enum: {
       values: roles,
-      message: '회장단, 운영진, 부원 중 하나여야 합니다.',
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
     },
     default: '부원',
   },
@@ -61,7 +61,7 @@ const validationSchema = new Schema<ValidationInterface>({
     type: String,
     enum: {
       values: roles,
-      message: '회장단, 운영진, 부원 중 하나여야 합니다.',
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
     },
     default: '운영진',
   },
@@ -69,7 +69,7 @@ const validationSchema = new Schema<ValidationInterface>({
     type: String,
     enum: {
       values: roles,
-      message: '회장단, 운영진, 부원 중 하나여야 합니다.',
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
     },
     default: '운영진',
   },
@@ -77,7 +77,7 @@ const validationSchema = new Schema<ValidationInterface>({
     type: String,
     enum: {
       values: roles,
-      message: '회장단, 운영진, 부원 중 하나여야 합니다.',
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
     },
     default: '운영진',
   },
@@ -85,7 +85,7 @@ const validationSchema = new Schema<ValidationInterface>({
     type: String,
     enum: {
       values: roles,
-      message: '회장단, 운영진, 부원 중 하나여야 합니다.',
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
     },
     default: '부원',
   },
@@ -97,7 +97,7 @@ const validationSchema = new Schema<ValidationInterface>({
     type: String,
     enum: {
       values: roles,
-      message: '회장단, 운영진, 부원 중 하나여야 합니다.',
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
     },
     default: '부원',
   },

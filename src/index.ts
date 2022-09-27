@@ -31,6 +31,14 @@ app.get(
   }
 );
 
+import { ClubType } from './models/club/ClubType';
+
+const a = new ClubType();
+a.name = '응애';
+a.createdAt = new Date();
+a.updatedAt = new Date();
+a.save();
+
 app.listen(8000, () => {
   console.log('8000번 포트 대기중...');
 });
