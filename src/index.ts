@@ -31,13 +31,10 @@ app.get(
   }
 );
 
-import { ClubType } from './models/club/ClubType';
+//import Routes
+import ClubTypeRouter from './routes/club/ClubType';
 
-const a = new ClubType();
-a.name = '응애';
-a.createdAt = new Date();
-a.updatedAt = new Date();
-a.save();
+app.use('/clubs/clubTypes', ClubTypeRouter);
 
 app.listen(8000, () => {
   console.log('8000번 포트 대기중...');

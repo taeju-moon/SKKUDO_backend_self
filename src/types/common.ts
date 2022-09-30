@@ -1,4 +1,13 @@
 import { Types } from 'mongoose';
+import { Request, Response } from 'express';
+
+export type Controller = (req: Request, res: Response) => void;
+
+export type Middleware = (
+  req: Request,
+  res: Response,
+  next: () => void
+) => void;
 
 export type Role = '회장' | '부회장' | '운영진' | '부원';
 

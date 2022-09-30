@@ -7,6 +7,7 @@ export interface Club {
   _id: Types.ObjectId;
   name: string;
   location: Location;
+  accepted: boolean;
   type: ClubType;
   userColumns: Column[];
   //description
