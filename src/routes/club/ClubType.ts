@@ -1,11 +1,12 @@
 import express from 'express';
-const ClubTypeRouter = express.Router();
 import {
   getAllClubTypes,
   getOneClubType,
   createClubType,
   deleteClubType,
 } from '../../controllers/club/ClubType';
+
+const ClubTypeRouter = express.Router();
 
 ClubTypeRouter.get('/', getAllClubTypes);
 

@@ -33,8 +33,10 @@ app.get(
 
 //import Routes
 import ClubTypeRouter from './routes/club/ClubType';
+import ClubRouter from './routes/club/Club';
 
 app.use('/clubs/clubTypes', ClubTypeRouter);
+app.use('/clubs/clubs', ClubRouter);
 
 app.listen(8000, () => {
   console.log('8000번 포트 대기중...');
