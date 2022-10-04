@@ -16,6 +16,7 @@ export interface RegisteredClub {
 export interface User {
   _id: Types.ObjectId;
   studentId: string;
+  userID: string;
   password: string;
   location: Location;
   registeredClubs: RegisteredClub[];
