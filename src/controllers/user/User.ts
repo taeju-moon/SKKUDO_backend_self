@@ -66,6 +66,44 @@ export const createUser: Controller = (req, res) => {
   }
 };
 
+export const updateUser: Controller = (req, res) => {
+  const body = req.body;
+  const id = req.params.id;
+  if (body.registeredClubs) {
+    res.status(403).json({
+      status: 'fail',
+      error: '직접적으로 유저의 동아리 정보를 변경할 수 없습니다.',
+    });
+  } else {
+    User.findOneAndUpdate({ userID: id }, body)
+      .then((data) => {
+        if (!data)
+          res.status(404).json({
+            status: 'fail',
+            error: '해당 아이디에 해당하는 유저가 없습니다.',
+          });
+        res.status(200).json({
+          status: 'success',
+          data,
+        });
+      })
+      .catch((error) =>
+        res.status(400).json({
+          status: 'fail',
+          error: error.message,
+        })
+      );
+  }
+};
+
+export const updateUserClub: Controller = (req, res) => {
+  const id = req.params.id;
+  const clubId = req.params.clubId;
+  // const user:UserInterface = User.findOne({ userID: id });
+  // if (!user) res.status(404).json({ status: 'fail', error: 'user not found' });
+  // user.registeredClubs.forEach((elem)=>);
+};
+
 export const deleteUser: Controller = (req, res) => {
   User.findByIdAndRemove(req.params.id)
     .then(() =>
