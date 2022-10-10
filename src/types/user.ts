@@ -21,6 +21,8 @@ export interface User {
   registeredClubs: RegisteredClub[];
   name: string;
   major: string;
+  token: string;
+  tokenExp: number;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -23,19 +23,19 @@ export const getAllUsers: Controller = (req, res) => {
 
 export const getUsersByClubId: Controller = (req, res) => {
   const clubId: string = req.params.clubId;
-
   const refine = (registeredClubs: RegisteredClub[], clubId: string) => {
+    let found = 0;
     registeredClubs.forEach((club) => {
-      if (String(club.clubId) === clubId) return true;
+      if (String(club.clubId) === clubId) found = 1;
     });
-    return false;
+    return found;
   };
 
   User.find()
     .then(async (users: UserInterface[]) => {
-      const refinedUsers: UserInterface[] = await users.filter((user) =>
-        refine(user.registeredClubs, clubId)
-      );
+      const refinedUsers: UserInterface[] = await users.filter((user) => {
+        return refine(user.registeredClubs, clubId);
+      });
       if (!refinedUsers)
         res.status(404).json({ status: 'fail', error: '404 not found' });
       res.status(200).json({
@@ -49,8 +49,8 @@ export const getUsersByClubId: Controller = (req, res) => {
 };
 
 export const getOneUser: Controller = (req, res) => {
-  const id = req.params.userID;
-  User.find({ userID: id })
+  const id = req.params.id;
+  User.findOne({ userID: id })
     .then((user) =>
       res.status(200).json({
         status: 'success',
@@ -165,6 +165,7 @@ export const updateRole: Controller = (req, res) => {
         user.registeredClubs.forEach((registeredClub: RegisteredClub) => {
           if (String(registeredClub.clubId) === clubId) {
             registeredClub.role = updatingRole;
+            found = 1;
           }
         });
         if (found) {

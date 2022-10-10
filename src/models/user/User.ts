@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { User as UserInterface } from '../../types/user';
+import { Schema, model, Model, Types } from 'mongoose';
+import { User, User as UserInterface } from '../../types/user';
 import { Location } from '../../types/common';
 import { registeredClubShcema } from './RegisteredClub';
 import bcrypt from 'bcrypt';
@@ -40,6 +40,12 @@ const userSchema = new Schema<UserInterface>({
     type: [registeredClubShcema],
     default: [],
   },
+  token: {
+    type: String,
+  },
+  tokenExp: {
+    type: Number,
+  },
   name: {
     type: String,
     required: true,
@@ -68,6 +74,8 @@ userSchema.pre('save', function (next) {
           .catch((error: any) => next(error));
       })
       .catch((error: any) => next(error));
+  } else {
+    next();
   }
 });
 
@@ -99,11 +107,43 @@ userSchema.methods.generateToken = function (
     .catch((error: any) => callback(error, null));
 };
 
-userSchema.statics.findByToken = function (token, callback) {
+userSchema.statics.findByToken = function (
+  token: any,
+  callback: (err: any, user: UserInterface | null) => void
+) {
   const user = this;
-  //jwt.verify();
+  jwt.verify(
+    String(token),
+    String(process.env.SECRET_TOKEN),
+    function (err: any, decoded: any) {
+      user.findOne(
+        { _id: decoded ? decoded.data : undefined, token: token },
+        function (err: any, user: UserInterface | null) {
+          if (err) return callback(err, null);
+          callback(null, user);
+        }
+      );
+    }
+  );
 };
 
-const User = model<UserInterface>('User', userSchema);
+interface UserMethods {
+  comparePassword(
+    plainPassword: string,
+    callback: (err: boolean, isMatch: boolean) => any
+  ): void;
+  generateToken(
+    callback: (error: any, user: UserInterface | null) => void
+  ): void;
+}
+
+interface UserModel extends Model<UserInterface, {}, UserMethods> {
+  findByToken(
+    token: string,
+    callback: (err: any, user: UserInterface | null) => void
+  ): void;
+}
+
+const User = model<UserInterface, UserModel>('User', userSchema);
 
 export { User, userSchema };
