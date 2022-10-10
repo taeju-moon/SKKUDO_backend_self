@@ -3,6 +3,7 @@ import {
   getAllToDos,
   getOneToDo,
   createToDo,
+  updateToDo,
   deleteToDo,
 } from '../../controllers/todo/ToDo';
 
@@ -13,6 +14,8 @@ ToDoRouter.get('/', getAllToDos);
 ToDoRouter.get('/:id', getOneToDo);
 
 ToDoRouter.post('/', createToDo);
+
+ToDoRouter.patch('/:id', updateToDo);
 
 ToDoRouter.delete('/:id', deleteToDo);
 
