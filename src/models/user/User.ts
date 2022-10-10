@@ -38,6 +38,7 @@ const userSchema = new Schema<UserInterface>({
   },
   registeredClubs: {
     type: [registeredClubShcema],
+    default: [],
   },
   name: {
     type: String,
@@ -57,16 +58,16 @@ userSchema.pre('save', function (next) {
   if (user.isModified('password')) {
     bcrypt
       .genSalt(parseInt(process.env.SALT_ROUNDS as string))
-      .then((salt) => {
+      .then((salt: string) => {
         bcrypt
           .hash(user.password, salt)
-          .then((hashedPW) => {
+          .then((hashedPW: string) => {
             user.password = hashedPW;
             next();
           })
-          .catch((error) => next(error));
+          .catch((error: any) => next(error));
       })
-      .catch((error) => next(error));
+      .catch((error: any) => next(error));
   }
 });
 

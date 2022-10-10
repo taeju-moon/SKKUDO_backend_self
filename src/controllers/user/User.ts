@@ -1,7 +1,9 @@
 import { User } from '../../models/user/User';
 import { User as UserInterface } from '../../types/user';
 import { Controller } from '../../types/common';
-import { Request, Response } from 'express';
+import { Types } from 'mongoose';
+import { Role } from '../../types/common';
+import { RegisteredClub } from './../../types/user';
 
 export const getAllUsers: Controller = (req, res) => {
   User.find()
@@ -21,7 +23,29 @@ export const getAllUsers: Controller = (req, res) => {
 
 export const getUsersByClubId: Controller = (req, res) => {
   const clubId: string = req.params.clubId;
-  //로직 적기
+
+  const refine = (registeredClubs: RegisteredClub[], clubId: string) => {
+    registeredClubs.forEach((club) => {
+      if (String(club.clubId) === clubId) return true;
+    });
+    return false;
+  };
+
+  User.find()
+    .then(async (users: UserInterface[]) => {
+      const refinedUsers: UserInterface[] = await users.filter((user) =>
+        refine(user.registeredClubs, clubId)
+      );
+      if (!refinedUsers)
+        res.status(404).json({ status: 'fail', error: '404 not found' });
+      res.status(200).json({
+        status: 'success',
+        data: refinedUsers,
+      });
+    })
+    .catch((error) =>
+      res.status(400).json({ status: 'fail', error: error.message })
+    );
 };
 
 export const getOneUser: Controller = (req, res) => {
@@ -96,12 +120,107 @@ export const updateUser: Controller = (req, res) => {
   }
 };
 
-export const updateUserClub: Controller = (req, res) => {
+export const registerClub: Controller = (req, res) => {
   const id = req.params.id;
   const clubId = req.params.clubId;
-  // const user:UserInterface = User.findOne({ userID: id });
-  // if (!user) res.status(404).json({ status: 'fail', error: 'user not found' });
-  // user.registeredClubs.forEach((elem)=>);
+  const { initialRole, moreColumns } = req.body;
+  User.findOne({ userID: id })
+    .then((user) => {
+      if (!user)
+        res.status(404).json({ status: 'fail', error: 'user not found' });
+      else {
+        const newRegisteredClub: RegisteredClub = {
+          clubId: new Types.ObjectId(clubId),
+          role: initialRole,
+          moreColumns: moreColumns,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        user.registeredClubs = [...user.registeredClubs, newRegisteredClub];
+        user
+          .save()
+          .then((user) =>
+            res.status(200).json({ status: 'success', data: user })
+          )
+          .catch((error) =>
+            res.status(400).json({ status: 'fail', error: error.message })
+          );
+      }
+    })
+    .catch((error) =>
+      res.status(400).json({ status: 'fail', error: error.message })
+    );
+};
+
+export const updateRole: Controller = (req, res) => {
+  const id = req.params.id;
+  const clubId = req.params.clubId;
+  const updatingRole: Role = req.body.updatingRole;
+  User.findOne({ userID: id })
+    .then((user) => {
+      if (!user)
+        res.status(404).json({ status: 'fail', error: 'user not found' });
+      else {
+        let found = 0;
+        user.registeredClubs.forEach((registeredClub: RegisteredClub) => {
+          if (String(registeredClub.clubId) === clubId) {
+            registeredClub.role = updatingRole;
+          }
+        });
+        if (found) {
+          user
+            .save()
+            .then((user) =>
+              res.status(200).json({ status: 'success', data: user })
+            )
+            .catch((error) =>
+              res.status(500).json({ status: 'fail', error: error.message })
+            );
+        } else {
+          res.status(404).json({
+            status: 'fail',
+            error: '해당 유저는 해당 동아리에 속하지 않습니다.',
+          });
+        }
+      }
+    })
+    .catch((error) =>
+      res.status(400).json({ status: 'fail', error: error.message })
+    );
+};
+
+export const deregisterClub: Controller = (req, res) => {
+  const id = req.params.id;
+  const clubId = req.params.clubId;
+  User.findOne({ userID: id })
+    .then((user) => {
+      if (!user)
+        res.status(404).json({ status: 'fail', error: 'user not found' });
+      else {
+        const updated = user.registeredClubs.filter(
+          (club) => String(club.clubId) !== clubId
+        );
+        if (updated.length === user.registeredClubs.length)
+          res.status(404).json({
+            status: 'fail',
+            error: '해당 유저는 해당 동아리에 속하지 않습니다.',
+          });
+        else {
+          user.registeredClubs = updated;
+          user
+            .save()
+            .then((user) =>
+              res.status(200).json({ status: 'success', data: user })
+            )
+            .catch((error) =>
+              res.status(500).json({ status: 'fail', error: error.message })
+            );
+        }
+      }
+    })
+    .catch((error) =>
+      res.status(400).json({ status: 'fail', error: error.message })
+    );
 };
 
 export const deleteUser: Controller = (req, res) => {
