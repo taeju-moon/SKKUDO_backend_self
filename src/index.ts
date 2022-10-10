@@ -36,11 +36,15 @@ import ClubTypeRouter from './routes/club/ClubType';
 import ClubRouter from './routes/club/Club';
 import NoticeTagRouter from './routes/notice/NoticeTag';
 import NoticeRouter from './routes/notice/Notice';
+import UserRouter from './routes/user/User';
+import AuthRouter from './routes/user/Auth';
 
 app.use('/clubs/clubTypes', ClubTypeRouter);
 app.use('/clubs/clubs', ClubRouter);
 app.use('/notices/noticeTags', NoticeTagRouter);
 app.use('/notices/notices', NoticeRouter);
+app.use('/users', UserRouter);
+app.use('/auth', AuthRouter);
 
 app.listen(8000, () => {
   console.log('8000번 포트 대기중...');

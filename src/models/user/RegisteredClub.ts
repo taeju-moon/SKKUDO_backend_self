@@ -14,10 +14,13 @@ const registeredClubShcema = new Schema<RegisteredClubInterface>({
     type: String,
     enum: {
       values: role,
-      message: '권한은 회장단, 운영진 또는 부원이어야 합니다.',
+      message: '권한은 회장, 부회장, 운영진 또는 부원이어야 합니다.',
     },
   },
-  moreColumns: [{ column: columnSchema, value: String }],
+  moreColumns: {
+    type: [{ column: columnSchema, value: String }],
+    default: [],
+  },
   createdAt: Date,
   updatedAt: Date,
 });
