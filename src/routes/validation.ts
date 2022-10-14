@@ -10,7 +10,7 @@ import { authByClub } from '../middlewares/auth';
 
 const validationRouter = express.Router();
 
-validationRouter.get('/', authByClub, getAllValidations);
+validationRouter.get('/', getAllValidations);
 
 validationRouter.get('/clubId', authByClub, getValidationByClubId);
 
