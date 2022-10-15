@@ -43,8 +43,8 @@ app.use('/clubs/clubTypes', ClubTypeRouter);
 app.use('/clubs/clubs', ClubRouter);
 app.use('/notices/noticeTags', NoticeTagRouter);
 app.use('/notices/notices', NoticeRouter);
-app.use('/todos/todoTags', ToDoTagRouter);
-app.use('/todos/todos', ToDoRouter);
+app.use('/todos/toDoTags', ToDoTagRouter);
+app.use('/todos/toDos', ToDoRouter);
 
 app.listen(8000, () => {
   console.log('8000번 포트 대기중...');
