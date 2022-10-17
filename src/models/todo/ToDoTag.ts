@@ -13,6 +13,5 @@ const toDoTagSchema = new Schema<ToDoTagInterface>({
   createdAt: Date,
   updatedAt: Date,
 });
-
 const ToDoTag = model<ToDoTagInterface>('ToDoTag', toDoTagSchema);
 export { ToDoTag, toDoTagSchema };

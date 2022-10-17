@@ -1,5 +1,6 @@
 import { Controller } from '../../types/common';
 import { ToDoTag } from '../../models/todo/ToDoTag';
+import { ToDo as ToDoInterface } from '../../types/todo';
 import { ToDo } from '../../models/todo/ToDo';
 import { Types } from 'mongoose';
 
@@ -47,57 +48,36 @@ export const createToDoTag: Controller = (req, res) => {
 
 export const deleteToDoTag: Controller = (req, res) => {
   const id: string = req.params.id;
-  let tag: Types.ObjectId | undefined;
-  let k: any[] = [];
   ToDoTag.findById(id)
     .then((data) => {
-      if (typeof data?._id === 'undefined') {
-        res.status(404).json({ status: 'fail', error: 'toDoTag not found'})
-      }
-      else {
-        tag = data._id
-        ToDo.find()
-          .then((toDos) => {
-            for (let i = 0; i < toDos.length; i++) {
-              for (let j = 0; j < toDos[i].tags.length; j++) {
-                if (typeof toDos[i].tags[j]._id === 'undefined' || typeof tag === 'undefined') {}
-                else {
-                  if (toDos[i].tags[j]._id.toString() === tag.toString()) {
-                    k.push(toDos[i]);
-                  }
-                }
-              }
-            }
-            if (k.length > 0) {
-              res.status(401).json({
-                status: 'fail',
-                error: {
-                  message: '해당 태그를 사용하고 있는 일정이 있습니다.',
-                  data: k
-                }
-              })
-            }
-            else {
-              ToDoTag.findByIdAndDelete(id)
-                .then((data2) => res.status(200).json({ status: 'success', data2 }))
-                .catch((error) =>
-                  res.status(400).json({ status: 'fail', error: error.message })
-                );
-            }
-          });
+      if (!data) {
+        res.status(404).json({ status: 'fail', error: 'toDoTag not found' });
+      } else {
+        ToDo.find({ clubId: data.clubId }).then((todos) => {
+          const filtered = todos.filter((todo: ToDoInterface) =>
+            todo.tags.includes(data)
+          );
+          if (filtered.length > 0)
+            res.status(403).json({
+              status: 'success',
+              error: {
+                meesage: '해당 태그를 사용하는 일정이 있습니다.',
+                data: filtered,
+              },
+            });
+          ToDoTag.findByIdAndDelete(id)
+            .then(() =>
+              res
+                .status(200)
+                .json({ status: 'success', data: 'successfully deleted' })
+            )
+            .catch((error) =>
+              res.status(400).json({ status: 'fail', error: error.message })
+            );
+        });
       }
     })
     .catch((error) =>
       res.status(400).json({ status: 'fail', error: error.message })
     );
 };
-
-/*
-export const deleteToDoTag: Controller = (req, res) => {
-  ToDoTag.findByIdAndDelete(req.params.id)
-    .then((data) => res.status(200).json({ status: 'success', data }))
-    .catch((error) =>
-      res.status(400).json({ status: 'fail', error: error.message })
-    );
-};
-*/
