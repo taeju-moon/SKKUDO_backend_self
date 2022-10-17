@@ -38,6 +38,9 @@ import NoticeTagRouter from './routes/notice/NoticeTag';
 import NoticeRouter from './routes/notice/Notice';
 import ToDoTagRouter from './routes/todo/ToDoTag';
 import ToDoRouter from './routes/todo/ToDo';
+import UserRouter from './routes/user/User';
+import AuthRouter from './routes/user/Auth';
+import ValidationRouter from './routes/validation';
 
 app.use('/clubs/clubTypes', ClubTypeRouter);
 app.use('/clubs/clubs', ClubRouter);
@@ -45,6 +48,9 @@ app.use('/notices/noticeTags', NoticeTagRouter);
 app.use('/notices/notices', NoticeRouter);
 app.use('/todos/toDoTags', ToDoTagRouter);
 app.use('/todos/toDos', ToDoRouter);
+app.use('/users', UserRouter);
+app.use('/auth', AuthRouter);
+app.use('/validations', ValidationRouter);
 
 app.listen(8000, () => {
   console.log('8000번 포트 대기중...');
