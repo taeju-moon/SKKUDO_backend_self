@@ -1,7 +1,5 @@
 import { User } from '../../models/user/User';
-import { User as UserInterface } from '../../types/user';
 import { Controller } from '../../types/common';
-import { RegisteredClub } from './../../types/user';
 
 export const login: Controller = (req, res) => {
   User.findOne({ userID: req.body.userID }).then((user) => {
@@ -48,15 +46,8 @@ export const logout: Controller = (req, res) => {
 };
 
 export const verify: Controller = (req, res) => {
-  const token = req.cookies.x_auth;
-  User.findByToken(token, (err, user) => {
-    if (err) return res.status(400).json({ status: 'fail', error: err });
-    if (!user)
-      return res
-        .status(401)
-        .json({ status: 'fail', error: '인증 정보가 없습니다.' });
-    else {
-      res.status(200).json({ status: 'success', data: user });
-    }
-  });
+  const authToken = req.body.authToken;
+  const authUser = req.body.authUser;
+  const data = { authToken, authUser };
+  res.status(200).json({ status: 'success', data });
 };
