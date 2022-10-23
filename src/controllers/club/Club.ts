@@ -2,6 +2,7 @@ import { Controller } from '../../types/common';
 import { Club } from '../../models/club/Club';
 
 export const getAllClubs: Controller = (req, res) => {
+  console.log(req);
   //미들웨어로 accepted 된 것만 보여주기
   Club.find()
     .then((clubs) =>

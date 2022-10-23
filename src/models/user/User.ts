@@ -1,7 +1,7 @@
 import { Schema, model, Model, Types } from 'mongoose';
-import { User, User as UserInterface } from '../../types/user';
+import { User, User as UserInterface, RegisteredClub } from '../../types/user';
 import { Location } from '../../types/common';
-import { registeredClubShcema } from './RegisteredClub';
+import { registeredClubSchema } from './RegisteredClub';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -37,7 +37,7 @@ const userSchema = new Schema<UserInterface>({
     },
   },
   registeredClubs: {
-    type: [registeredClubShcema],
+    type: [registeredClubSchema],
     default: [],
   },
   token: {
@@ -107,6 +107,16 @@ userSchema.methods.generateToken = function (
     .catch((error: any) => callback(error, null));
 };
 
+userSchema.methods.findByClubId = function (
+  clubId: string
+): RegisteredClub | null {
+  const user = this;
+  user.registeredClubs.forEach((club: RegisteredClub) => {
+    if (String(club.clubId) === clubId) return club;
+  });
+  return null;
+};
+
 userSchema.statics.findByToken = function (
   token: any,
   callback: (err: any, user: UserInterface | null) => void
@@ -135,6 +145,7 @@ interface UserMethods {
   generateToken(
     callback: (error: any, user: UserInterface | null) => void
   ): void;
+  findByClubId(clubId: string): RegisteredClub | null;
 }
 
 interface UserModel extends Model<UserInterface, {}, UserMethods> {

@@ -5,7 +5,7 @@ import { Role } from '../../types/common';
 
 const role: Role[] = ['회장', '부회장', '운영진', '부원'];
 
-const registeredClubShcema = new Schema<RegisteredClubInterface>({
+const registeredClubSchema = new Schema<RegisteredClubInterface>({
   clubId: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -27,7 +27,7 @@ const registeredClubShcema = new Schema<RegisteredClubInterface>({
 
 const RegisteredClub = model<RegisteredClubInterface>(
   'RegisteredClub',
-  registeredClubShcema
+  registeredClubSchema
 );
 
-export { RegisteredClub, registeredClubShcema };
+export { RegisteredClub, registeredClubSchema };
