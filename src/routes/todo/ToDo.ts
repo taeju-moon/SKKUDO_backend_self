@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   getAllToDos,
+  getToDosByClubId,
   getOneToDo,
   createToDo,
   updateToDo,
@@ -10,6 +11,8 @@ import {
 const ToDoRouter = express.Router();
 
 ToDoRouter.get('/', getAllToDos);
+
+ToDoRouter.get('/club/:id', getToDosByClubId);
 
 ToDoRouter.get('/:id', getOneToDo);
 

@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   getAllNotices,
+  getNoticesByClubId,
   getOneNotice,
   createNotice,
   updateNotice,
@@ -10,6 +11,8 @@ import {
 const NoticeRouter = express.Router();
 
 NoticeRouter.get('/', getAllNotices);
+
+NoticeRouter.get('/club/:id', getNoticesByClubId);
 
 NoticeRouter.get('/:id', getOneNotice);
 

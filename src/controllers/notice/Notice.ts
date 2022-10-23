@@ -17,6 +17,18 @@ export const getAllNotices: Controller = (req, res) => {
     );
 };
 
+export const getNoticesByClubId: Controller = (req, res) => {
+  Notice.find({ clubId: req.params.id })
+    .then((notices) => {
+      if (!notices)
+        res.status(404).json({ status: 'fail', error: 'notices not found' });
+      res.status(200).json({ status: 'success', data: notices });
+    })
+    .catch((error) =>
+      res.status(500).json({ status: 'fail', error: error.message })
+    );
+};
+
 export const getOneNotice: Controller = (req, res) => {
   const id: string = req.params.id;
   Notice.findById(id)
@@ -44,23 +56,23 @@ export const createNotice: Controller = (req, res) => {
 };
 
 export const updateNotice: Controller = (req, res) => {
-    const id: string = req.params.id;
-    Notice.findOneAndUpdate({ _id: id }, req.body)
-      .then((data) => {
-        if (!data)
-          res.status(400).json({ status: 'fail', error: 'Notice not found' });
-        res.status(200).json({
-          status: 'success',
-          data,
-        });
+  const id: string = req.params.id;
+  Notice.findOneAndUpdate({ _id: id }, req.body)
+    .then((data) => {
+      if (!data)
+        res.status(400).json({ status: 'fail', error: 'Notice not found' });
+      res.status(200).json({
+        status: 'success',
+        data,
+      });
+    })
+    .catch((error) =>
+      res.status(400).json({
+        status: 'fail',
+        error: error.message,
       })
-      .catch((error) =>
-        res.status(400).json({
-          status: 'fail',
-          error: error.message,
-        })
-      );
-  };
+    );
+};
 
 export const deleteNotice: Controller = (req, res) => {
   Notice.findByIdAndDelete(req.params.id)
