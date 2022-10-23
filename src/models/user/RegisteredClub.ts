@@ -10,6 +10,7 @@ const registeredClubShcema = new Schema<RegisteredClubInterface>({
     type: Schema.Types.ObjectId,
     required: true,
   },
+  clubName: { type: String, required: true },
   role: {
     type: String,
     enum: {

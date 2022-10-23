@@ -33,11 +33,9 @@ export const authByClub: Middleware = (req, res, next) => {
         next();
       }
     });
-    res
-      .status(403)
-      .json({
-        status: 'fail',
-        error: '인증 정보가 해당 동아리에 속하지 않습니다.',
-      });
+    res.status(403).json({
+      status: 'fail',
+      error: '인증 정보가 해당 동아리에 속하지 않습니다.',
+    });
   });
 };
