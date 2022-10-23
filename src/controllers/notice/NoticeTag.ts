@@ -23,7 +23,7 @@ export const getOneNoticeTag: Controller = (req, res) => {
     .then((noticeTag) => {
       if (!noticeTag)
         res.status(404).json({ status: 'fail', error: 'noticeTag not found' });
-      res.status(200).json({ status: 'success', data: noticeTag });
+      res.status(200).json({ status: 'succ ess', data: noticeTag });
     })
     .catch((error) => {
       res.status(400).json({
