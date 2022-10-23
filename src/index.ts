@@ -41,6 +41,8 @@ import ToDoRouter from './routes/todo/ToDo';
 import UserRouter from './routes/user/User';
 import AuthRouter from './routes/user/Auth';
 import ValidationRouter from './routes/validation';
+import ApplierRouter from './routes/apply/Applier';
+import AppliedUserRouter from './routes/apply/AppliedUser';
 
 app.use('/clubs/clubTypes', ClubTypeRouter);
 app.use('/clubs/clubs', ClubRouter);
@@ -51,6 +53,8 @@ app.use('/todos/toDos', ToDoRouter);
 app.use('/users', UserRouter);
 app.use('/auth', AuthRouter);
 app.use('/validations', ValidationRouter);
+app.use('/applies/appliers', ApplierRouter);
+app.use('/applies/appliedUsers', AppliedUserRouter);
 
 app.listen(8000, () => {
   console.log('8000번 포트 대기중...');
