@@ -11,6 +11,7 @@ const appliedUserSchema = new Schema<AppliedUserInterface>({
   studentId: {
     type: String,
     required: true,
+    unique: true,
   },
   name: {
     type: String,
