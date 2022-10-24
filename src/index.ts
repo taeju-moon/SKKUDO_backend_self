@@ -16,7 +16,7 @@ const corsOption = {
 
 app.use(cors(corsOption));
 app.use(express.json());
-app.use(cookieParser({ sameSite: 'none', secure: true }));
+app.use(cookieParser());
 
 //connect to MongoDB
 mongoose
@@ -28,6 +28,10 @@ app.get(
   '/',
   (req: express.Request, res: express.Response, next: express.NextFunction) => {
     res.send('hello');
+    res.cookie('foo', 'bar', {
+      sameSite: true,
+      secure: true,
+    });
   }
 );
 
