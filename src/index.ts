@@ -29,6 +29,7 @@ app.get(
   (req: express.Request, res: express.Response, next: express.NextFunction) => {
     res.send('hello');
     res.cookie('foo', 'bar', {
+      httpOnly: true,
       sameSite: true,
       secure: true,
     });
