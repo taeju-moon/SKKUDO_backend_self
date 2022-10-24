@@ -26,7 +26,7 @@ export const authByClub: Middleware = (req, res, next) => {
     if (err) throw err;
     if (!user)
       return res
-        .status(404)
+        .status(401)
         .json({ status: 'fail', error: '인증 정보가 없습니다' });
     const identifiedUser: UserInterface = user;
     identifiedUser.registeredClubs.forEach((item) => {
@@ -72,13 +72,13 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
             const registeredClub: RegisteredClub | null =
               user.findByClubId(clubId);
             if (!registeredClub)
-              return res
-                .status(403)
-                .json({
-                  status: 'fail',
-                  error: '동아리에 가입되어있지 않습니다.',
-                });
+              return res.status(403).json({
+                status: 'fail',
+                error: '동아리에 가입되어있지 않습니다.',
+              });
             else {
+              const result = Validation.validateUser(validator, '운영진');
+              console.log(result);
             }
           }
         })

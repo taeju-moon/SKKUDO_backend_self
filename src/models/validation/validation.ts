@@ -168,6 +168,7 @@ interface ValidationModel extends Model<ValidationInterface> {
     method: Method,
     uri: string
   ): Role;
+  validateUser(validator: Role, myLevel: Role): boolean;
 }
 
 const Validation = model<ValidationInterface, ValidationModel>(
