@@ -16,7 +16,7 @@ const corsOption = {
 
 app.use(cors(corsOption));
 app.use(express.json());
-app.use(cookieParser());
+app.use(cookieParser({ sameSite: 'none', secure: true }));
 
 //connect to MongoDB
 mongoose
