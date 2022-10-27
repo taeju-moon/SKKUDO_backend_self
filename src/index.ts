@@ -28,7 +28,6 @@ app.get(
   '/',
   (req: express.Request, res: express.Response, next: express.NextFunction) => {
     res.send('hello');
-    res.setHeader('Set-Cookie', 'SameSite=none');
   }
 );
 
