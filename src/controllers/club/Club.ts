@@ -19,7 +19,7 @@ export const getAllClubs: Controller = (req, res) => {
 };
 
 export const getOneClub: Controller = (req, res) => {
-  const id: string = req.params.id;
+  const id: string = req.params.clubId;
   Club.findById(id)
     .then((club) => {
       if (!club)
@@ -54,7 +54,7 @@ export const createClub: Controller = (req, res) => {
 };
 
 export const updateClub: Controller = (req, res) => {
-  const id: string = req.params.id;
+  const id: string = req.params.clubId;
   //accept는 acceptClub으로만 할 수 있음
   if (req.body.accepted)
     res.status(403).json({
@@ -79,7 +79,7 @@ export const updateClub: Controller = (req, res) => {
 };
 
 export const acceptClub: Controller = (req, res) => {
-  const id: string = req.params.id;
+  const id: string = req.params.clubId;
   Club.findOneAndUpdate(
     { _id: id },
     {

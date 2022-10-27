@@ -14,9 +14,10 @@ export interface Validation {
   applyRead: Role;
   applyWrite: Role;
   validationRead: Role;
-  validationWrite: '회장단';
+  validationWrite: '회장';
   clubRead: Role;
-  clubWrite: '회장단';
+  clubWrite: '회장';
+  tagWrite: Role;
   createdAt: Date;
   updatedAt: Date;
 }

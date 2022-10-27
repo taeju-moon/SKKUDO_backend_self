@@ -135,6 +135,7 @@ export const registerClub: Controller = async (req, res) => {
           res.status(404).json({ status: 'fail', error: 'club not found' });
         const newRegisteredClub: RegisteredClub = {
           clubId: new Types.ObjectId(clubId),
+          clubName: '',
           role: initialRole,
           clubName: usingClub?.name as string,
           moreColumns: moreColumns,

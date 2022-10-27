@@ -15,6 +15,8 @@ export type Location = '인사캠' | '자과캠';
 
 export type ValueType = 'string' | 'number' | 'boolean';
 
+export type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
+
 export interface Column {
   _id: Types.ObjectId;
   key: string;

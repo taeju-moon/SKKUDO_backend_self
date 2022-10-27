@@ -12,12 +12,12 @@ const validationRouter = express.Router();
 
 validationRouter.get('/', getAllValidations);
 
-validationRouter.get('/clubId', authByClub, getValidationByClubId);
+validationRouter.get('/:clubId', getValidationByClubId);
 
-validationRouter.post('/', authByClub, createValidation);
+validationRouter.post('/:clubId', createValidation);
 
-validationRouter.patch('/:clubId', authByClub, updateValidation);
+validationRouter.patch('/:clubId', updateValidation);
 
-validationRouter.delete('/:clubId', authByClub, deleteValidation);
+validationRouter.delete('/:clubId', deleteValidation);
 
 export default validationRouter;
