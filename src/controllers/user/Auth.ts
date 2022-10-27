@@ -22,7 +22,10 @@ export const login: Controller = (req, res) => {
                 .json({ status: 'fail', error: err.message });
             if (user) {
               res
-                .cookie('x_auth', user.token, { sameSite: 'none' })
+                .cookie('x_auth', user.token, {
+                  sameSite: 'none',
+                  secure: true,
+                })
                 .status(200)
                 .json({ status: 'success', data: user });
             }
