@@ -111,10 +111,13 @@ userSchema.methods.findByClubId = function (
   clubId: string
 ): RegisteredClub | null {
   const user = this;
+  let usingClub: RegisteredClub | null = null;
   user.registeredClubs.forEach((club: RegisteredClub) => {
-    if (String(club.clubId) === clubId) return club;
+    if (String(club.clubId) === clubId) {
+      usingClub = club;
+    }
   });
-  return null;
+  return usingClub;
 };
 
 userSchema.statics.findByToken = function (

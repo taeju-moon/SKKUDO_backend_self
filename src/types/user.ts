@@ -3,6 +3,7 @@ import { Types } from 'mongoose';
 
 export interface RegisteredClub {
   clubId: Types.ObjectId;
+  clubName: string;
   role: Role;
   moreColumns: {
     column: Column;

@@ -10,25 +10,34 @@ import {
   deregisterClub,
   updateRole,
 } from '../../controllers/user/User';
+import { authByValidationTable } from '../../middlewares/auth';
 
 const UserRouter = express.Router();
 
 UserRouter.get('/', getAllUsers);
 
-UserRouter.get('/byClub/:clubId', getUsersByClubId);
+UserRouter.get('/byClub/:clubId', authByValidationTable, getUsersByClubId);
 
 UserRouter.get('/:id', getOneUser);
 
-UserRouter.post('/', createUser);
+UserRouter.post('/', authByValidationTable, createUser);
 
 UserRouter.patch('/:id', updateUser);
 
 UserRouter.delete('/:id', deleteUser);
 
-UserRouter.patch('/club/register/:id/:clubId', registerClub);
+UserRouter.patch(
+  '/club/register/:id/:clubId',
+  authByValidationTable,
+  registerClub
+);
 
-UserRouter.patch('/club/deregister/:id/:clubId', deregisterClub);
+UserRouter.patch(
+  '/club/deregister/:id/:clubId',
+  authByValidationTable,
+  deregisterClub
+);
 
-UserRouter.patch('/club/role/:id/:clubId', updateRole);
+UserRouter.patch('/club/role/:id/:clubId', authByValidationTable, updateRole);
 
 export default UserRouter;

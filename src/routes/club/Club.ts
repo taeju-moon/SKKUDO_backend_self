@@ -7,19 +7,20 @@ import {
   acceptClub,
   deleteClub,
 } from '../../controllers/club/Club';
+import { authByValidationTable } from '../../middlewares/auth';
 
 const ClubRouter = express.Router();
 
 ClubRouter.get('/', getAllClubs);
 
-ClubRouter.get('/:id', getOneClub);
+ClubRouter.get('/:clubId', getOneClub);
 
 ClubRouter.post('/', createClub);
 
-ClubRouter.patch('/:id', updateClub);
+ClubRouter.patch('/:clubId', updateClub);
 
-ClubRouter.patch('/accept/:id', acceptClub);
+ClubRouter.patch('/accept/:clubId', acceptClub);
 
-ClubRouter.delete('/:id', deleteClub);
+ClubRouter.delete('/:clubId', deleteClub);
 
 export default ClubRouter;

@@ -16,13 +16,16 @@ export const getAllValidations: Controller = (req, res) => {
 };
 
 export const getValidationByClubId: Controller = (req, res) => {
-  Validation.find({ clubId: req.params.clubId })
+  Validation.findOne({ clubId: req.params.clubId })
     .then((data) => {
       if (!data)
         res
           .status(404)
-          .json({ status: 'fail', data: '해당 동아리를 찾을 수 없습니다' });
-      res.status(200).json({ status: 'success', data });
+          .json({
+            status: 'fail',
+            data: '해당 동아리의 인증 테이블을 찾을 수 없습니다',
+          });
+      else res.status(200).json({ status: 'success', data });
     })
     .catch((error) =>
       res.status(500).json({ status: 'fail', error: error.message })

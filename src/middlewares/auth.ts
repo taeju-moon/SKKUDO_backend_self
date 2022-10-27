@@ -1,4 +1,4 @@
-import { User, userSchema } from '../models/user/User';
+import { User } from '../models/user/User';
 import { Middleware } from '../types/common';
 import { User as UserInterface, RegisteredClub } from '../types/user';
 import { Method, Role } from '../types/common';
@@ -47,7 +47,9 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
   const method: Method = req.method as Method;
   const originalUrl = req.originalUrl;
   const token = req.cookies.x_auth;
-  const clubId: string = req.params.clubId;
+  const clubId: string = req.params.clubId
+    ? req.params.clubId
+    : req.body.clubId;
   const validation: ValidationInterface | null = await Validation.findOne({
     clubId,
   });
@@ -64,7 +66,7 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
     );
     User.findByToken(token, (err, user) => {
       if (err) throw Error(err);
-      User.findById(user?.userID)
+      User.findOne({ userID: user?.userID })
         .then((user) => {
           if (!user) {
             res.status(404).json({ status: 'fail', error: 'user not found' });
@@ -77,8 +79,16 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
                 error: '동아리에 가입되어있지 않습니다.',
               });
             else {
-              const result = Validation.validateUser(validator, '운영진');
-              console.log(result);
+              const result = Validation.validateUser(
+                validator,
+                registeredClub.role
+              );
+              if (result) next();
+              else
+                res.status(403).json({
+                  status: 'fail',
+                  error: `${validator}이상의 권한이 필요합니다.`,
+                });
             }
           }
         })

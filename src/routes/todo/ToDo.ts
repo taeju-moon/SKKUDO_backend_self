@@ -6,6 +6,7 @@ import {
   updateToDo,
   deleteToDo,
 } from '../../controllers/todo/ToDo';
+import { authByValidationTable } from '../../middlewares/auth';
 
 const ToDoRouter = express.Router();
 
@@ -13,10 +14,10 @@ ToDoRouter.get('/', getAllToDos);
 
 ToDoRouter.get('/:id', getOneToDo);
 
-ToDoRouter.post('/', createToDo);
+ToDoRouter.post('/', authByValidationTable, createToDo);
 
-ToDoRouter.patch('/:id', updateToDo);
+ToDoRouter.patch('/:id', authByValidationTable, updateToDo);
 
-ToDoRouter.delete('/:id', deleteToDo);
+ToDoRouter.delete('/:id', authByValidationTable, deleteToDo);
 
 export default ToDoRouter;

@@ -131,6 +131,7 @@ export const registerClub: Controller = (req, res) => {
       else {
         const newRegisteredClub: RegisteredClub = {
           clubId: new Types.ObjectId(clubId),
+          clubName: '',
           role: initialRole,
           moreColumns: moreColumns,
           createdAt: new Date(),
