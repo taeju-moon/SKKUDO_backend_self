@@ -18,6 +18,18 @@ export const getAllToDos: Controller = (req, res) => {
     );
 };
 
+export const getToDosByClubId: Controller = (req, res) => {
+  ToDo.find({ clubId: req.params.id })
+    .then((todos) => {
+      if (!todos)
+        res.status(404).json({ status: 'fail', error: 'todos not found' });
+      res.status(200).json({ status: 'success', data: todos });
+    })
+    .catch((error) =>
+      res.status(500).json({ status: 'fail', error: error.message })
+    );
+};
+
 export const getOneToDo: Controller = (req, res) => {
   const id: string = req.params.id;
   ToDo.findById(id)

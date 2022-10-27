@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   getAllNotices,
+  getNoticesByClubId,
   getOneNotice,
   createNotice,
   updateNotice,
@@ -11,6 +12,8 @@ import { authByValidationTable } from '../../middlewares/auth';
 const NoticeRouter = express.Router();
 
 NoticeRouter.get('/', getAllNotices);
+
+NoticeRouter.get('/club/:id', authByValidationTable, getNoticesByClubId);
 
 NoticeRouter.get('/:id', authByValidationTable, getOneNotice);
 

@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { NoticeTag as NoticeTagInterface } from '../../types/notice';
 import { NoticeTag } from '../../types/notice';
-import { Notice as NoticeInterface } from '../../types/Notice';
+import { Notice as NoticeInterface } from '../../types/notice';
 import { Notice } from './Notice';
 
 const noticeTagSchema = new Schema<NoticeTagInterface>({

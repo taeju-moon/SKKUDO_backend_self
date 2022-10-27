@@ -4,6 +4,7 @@ import { Controller } from '../../types/common';
 import { Types } from 'mongoose';
 import { Role } from '../../types/common';
 import { RegisteredClub } from './../../types/user';
+import { Club } from '../../models/club/Club';
 
 export const getAllUsers: Controller = (req, res) => {
   User.find()
@@ -120,19 +121,23 @@ export const updateUser: Controller = (req, res) => {
   }
 };
 
-export const registerClub: Controller = (req, res) => {
+export const registerClub: Controller = async (req, res) => {
   const id = req.params.id;
   const clubId = req.params.clubId;
   const { initialRole, moreColumns } = req.body;
   User.findOne({ userID: id })
-    .then((user) => {
+    .then(async (user) => {
       if (!user)
         res.status(404).json({ status: 'fail', error: 'user not found' });
       else {
+        const usingClub = await Club.findById(clubId);
+        if (!usingClub)
+          res.status(404).json({ status: 'fail', error: 'club not found' });
         const newRegisteredClub: RegisteredClub = {
           clubId: new Types.ObjectId(clubId),
           clubName: '',
           role: initialRole,
+          clubName: usingClub?.name as string,
           moreColumns: moreColumns,
           createdAt: new Date(),
           updatedAt: new Date(),

@@ -27,6 +27,7 @@ mongoose
 app.get(
   '/',
   (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    res.cookie('ai_user', 'ai_user', { sameSite: 'none', secure: true });
     res.send('hello');
   }
 );
