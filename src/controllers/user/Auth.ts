@@ -25,6 +25,7 @@ export const login: Controller = (req, res) => {
                 .cookie('x_auth', user.token, {
                   sameSite: 'none',
                   secure: true,
+                  maxAge: 60 * 60 * 60 * 24,
                 })
                 .status(200)
                 .json({ status: 'success', data: user });
@@ -43,7 +44,10 @@ export const logout: Controller = (req, res) => {
     (err: any) => {
       if (err)
         return res.status(500).json({ status: 'fail', error: err.message });
-      return res.status(200).json({ status: 'success', data: 'logged out' });
+      return res
+        .status(200)
+        .cookie('x_auth', '', { maxAge: 0 })
+        .json({ status: 'success', data: 'logged out' });
     }
   );
 };
