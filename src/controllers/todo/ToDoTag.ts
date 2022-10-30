@@ -83,8 +83,18 @@ export const createToDoTag: Controller = (req, res) => {
 
 export const deleteToDoTag: Controller = (req, res) => {
   const id: string = req.params.id;
-  ToDoTag.findByIdAndDelete(id)
-    .then((data) => res.status(200).json({ status: 'success', data }))
+  ToDoTag.findOne({ _id: id })
+    .then((data) => {
+      if (!data)
+        res.status(404).json({ status: 'fail', error: 'todotag not found' });
+      else
+        data
+          .remove()
+          .then((data) => res.status(200).json({ status: 'success', data }))
+          .catch((error) =>
+            res.status(500).json({ status: 'fail', error: error.message })
+          );
+    })
     .catch((error) =>
       res.status(403).json({ status: 'fail', error: error.message })
     );

@@ -28,6 +28,7 @@ const clubSchema = new Schema<ClubInterface>({
   type: {
     type: clubTypeSchema,
     required: true,
+    ref: 'ClubType',
   },
   recruitType: {
     type: String,
