@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Types } from 'mongoose';
 import { NoticeTag as NoticeTagInterface } from '../../types/notice';
 import { NoticeTag } from '../../types/notice';
 import { Notice as NoticeInterface } from '../../types/notice';
@@ -23,7 +23,6 @@ const noticeTagSchema = new Schema<NoticeTagInterface>({
 });
 
 noticeTagSchema.pre('remove', function (next) {
-  console.log('응애 나 애기 개발자');
   const noticeTag = this;
   Notice.find({ clubId: noticeTag.clubId })
     .then((notices: NoticeInterface[]) => {

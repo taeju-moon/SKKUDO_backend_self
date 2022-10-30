@@ -44,10 +44,11 @@ export const createNoticeTag: Controller = (req, res) => {
 };
 
 export const deleteNoticeTag: Controller = (req, res) => {
-  NoticeTag.findOne({ _id: req.params.id })
+  const id = req.params.id;
+  NoticeTag.findOne({ _id: id })
     .then((data) => {
       if (!data)
-        res.status(404).json({ status: 'fail', error: 'notice not found' });
+        res.status(404).json({ status: 'fail', error: 'noticetag not found' });
       else
         data
           .remove()
@@ -57,6 +58,6 @@ export const deleteNoticeTag: Controller = (req, res) => {
           );
     })
     .catch((error) =>
-      res.status(400).json({ status: 'fail', error: error.message })
+      res.status(403).json({ status: 'fail', error: error.message })
     );
 };
