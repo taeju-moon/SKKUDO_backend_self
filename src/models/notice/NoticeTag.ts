@@ -23,14 +23,17 @@ const noticeTagSchema = new Schema<NoticeTagInterface>({
 });
 
 noticeTagSchema.pre('remove', function (next) {
+  console.log('응애 나 애기 개발자');
   const noticeTag = this;
   Notice.find({ clubId: noticeTag.clubId })
     .then((notices: NoticeInterface[]) => {
-      const filtered = notices.filter((notice) =>
-        notice.tags.includes(noticeTag)
-      );
-      if (filtered.length > 0)
-        next(Error('해당 태그를 사용하는 일정이 있습니다.'));
+      let usingTag: NoticeTagInterface | null = null;
+      notices.forEach((notice) => {
+        notice.tags.forEach((item) => {
+          if (item.name === noticeTag.name) usingTag = item;
+        });
+      });
+      if (usingTag) next(Error('해당 태그를 사용하는 공지가 있습니다.'));
       else next();
     })
     .catch((error) => next(Error(error)));
