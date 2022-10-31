@@ -21,9 +21,12 @@ export const getAllStudies: Controller = (req, res) => {
 export const getStudiesByClubId: Controller = (req, res) => {
     Study.find({ clubId: req.params.id })
     .then((studies) => {
-      if (!studies)
+      if (!studies) {
         res.status(404).json({ status: 'fail', error: 'studies not found' });
-      res.status(200).json({ status: 'success', data: studies });
+      }
+      else {
+        res.status(200).json({ status: 'success', data: studies });
+      }
     })
     .catch((error) =>
       res.status(500).json({ status: 'fail', error: error.message })
@@ -34,9 +37,12 @@ export const getOneStudy: Controller = (req, res) => {
   const id: string = req.params.id;
   Study.findById(id)
     .then((study) => {
-      if (!study)
+      if (!study)  {
         res.status(404).json({ status: 'fail', error: 'study not found' });
-      res.status(200).json({ status: 'success', data: study });
+      }
+      else {
+        res.status(200).json({ status: 'success', data: study });
+      }
     })
     .catch((error) => {
       res.status(400).json({
@@ -62,14 +68,13 @@ export const createStudy: Controller = (req, res) => {
         }
       }
       if (i === k) {
-        res.status(404).json({
+        return res.status(404).json({
           status: 'fail',
           error: {
             message: '존재하지 않는 스터디 태그입니다.',
             data: study.tags[i],
           },
         });
-        break;
       }
     }
     if (k === study.tags.length) {
@@ -87,12 +92,14 @@ export const updateStudy: Controller = (req, res) => {
   const id: string = req.params.id;
   Study.findOneAndUpdate({ _id: id }, req.body)
     .then((data) => {
-      if (!data)
+      if (!data) {
         res.status(400).json({ status: 'fail', error: 'Study not found' });
-      res.status(200).json({
+      }
+      else {
+        res.status(200).json({
         status: 'success',
         data,
-      });
+      })};
     })
     .catch((error) =>
       res.status(400).json({

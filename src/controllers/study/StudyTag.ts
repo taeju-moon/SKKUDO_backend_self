@@ -21,9 +21,12 @@ export const getOneStudyTag: Controller = (req, res) => {
   const id: string = req.params.id;
   StudyTag.findById(id)
     .then((studyTag) => {
-      if (!studyTag)
+      if (!studyTag) {
         res.status(404).json({ status: 'fail', error: 'studyTag not found' });
-      res.status(200).json({ status: 'success', data: studyTag });
+      }
+      else {
+        res.status(200).json({ status: 'success', data: studyTag });
+      }
     })
     .catch((error) => {
       res.status(400).json({
