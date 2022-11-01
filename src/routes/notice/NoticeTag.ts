@@ -5,15 +5,20 @@ import {
   createNoticeTag,
   deleteNoticeTag,
 } from '../../controllers/notice/NoticeTag';
+import {
+  authByValidationTable,
+  auth,
+  authBySuperUser,
+} from '../../middlewares/auth';
 
 const NoticeTagRouter = express.Router();
 
-NoticeTagRouter.get('/', getAllNoticeTags);
+NoticeTagRouter.get('/', auth, authBySuperUser, getAllNoticeTags);
 
 NoticeTagRouter.get('/:id', getOneNoticeTag);
 
-NoticeTagRouter.post('/', createNoticeTag);
+NoticeTagRouter.post('/', authByValidationTable, createNoticeTag);
 
-NoticeTagRouter.delete('/:id', deleteNoticeTag);
+NoticeTagRouter.delete('/:id', authByValidationTable, deleteNoticeTag);
 
 export default NoticeTagRouter;

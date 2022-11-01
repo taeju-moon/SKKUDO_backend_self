@@ -6,11 +6,15 @@ import {
   updateValidation,
   deleteValidation,
 } from '../controllers/validation';
-import { authByValidationTable } from '../middlewares/auth';
+import {
+  authByValidationTable,
+  auth,
+  authBySuperUser,
+} from '../middlewares/auth';
 
 const validationRouter = express.Router();
 
-validationRouter.get('/', getAllValidations);
+validationRouter.get('/', auth, authBySuperUser, getAllValidations);
 
 validationRouter.get('/:clubId', authByValidationTable, getValidationByClubId);
 

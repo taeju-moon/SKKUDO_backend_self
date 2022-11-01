@@ -7,11 +7,15 @@ import {
   deleteApplier,
 } from '../../controllers/apply/Applier';
 import { isThereAppliedUsers } from '../../middlewares/apply';
-import { authByValidationTable } from '../../middlewares/auth';
+import {
+  authByValidationTable,
+  authBySuperUser,
+  auth,
+} from '../../middlewares/auth';
 
 const ApplierRouter = express.Router();
 
-ApplierRouter.get('/', getAllAppliers);
+ApplierRouter.get('/', auth, authBySuperUser, getAllAppliers);
 
 ApplierRouter.get('/byClub/:clubId', authByValidationTable, getApplierByClubId);
 
