@@ -18,15 +18,16 @@ export const getAllAppliedUsers: Controller = (req, res) => {
     );
 };
 
-export const getAppliedUserByClubId: Controller = (req, res) => {
+export const getAppliedUsersByClubId: Controller = (req, res) => {
   const clubId: string = req.params.clubId;
   let users: any[] = [];
   Club.findById(clubId)
     .then((club) => {
       if (!club) {
-        res.status(404).json({ status: 'fail', error: '존재하지 않는 동아리입니다.' });
-      }
-      else {
+        res
+          .status(404)
+          .json({ status: 'fail', error: '존재하지 않는 동아리입니다.' });
+      } else {
         AppliedUser.find()
           .then((appliedUser) => {
             for (let i = 0; i < appliedUser.length; i++) {
@@ -37,14 +38,14 @@ export const getAppliedUserByClubId: Controller = (req, res) => {
             return res.status(200).json({
               status: 'success',
               data: users,
-            })
+            });
           })
           .catch((error) => {
             return res.status(400).json({
               status: 'fail',
               error: error.message,
-            })
-          })
+            });
+          });
       }
     })
     .catch((error) =>
@@ -52,26 +53,31 @@ export const getAppliedUserByClubId: Controller = (req, res) => {
         status: 'fail',
         error: error.message,
       })
-    )
+    );
 };
 
 export const createAppliedUser: Controller = (req, res) => {
+  req.body.createdAt = new Date();
+  req.body.updatedAt = new Date();
   const appliedUser = new AppliedUser(req.body);
-  const clubId = appliedUser.clubId.toString(); 
+  const clubId = appliedUser.clubId.toString();
   Club.findById(clubId)
     .then((club) => {
       if (!club) {
-        return res.status(404).json({ status: 'fail', error: '존재하지 않는 동아리입니다.' });
-      }
-      else {
+        return res
+          .status(404)
+          .json({ status: 'fail', error: '존재하지 않는 동아리입니다.' });
+      } else {
         appliedUser
           .save()
           .then((data) => {
-            return res.status(200).json({ status: 'success', data } )
+            return res.status(200).json({ status: 'success', data });
           })
           .catch((error) => {
-            return res.status(400).json({ status: 'fail', error: error.message })
-        });
+            return res
+              .status(400)
+              .json({ status: 'fail', error: error.message });
+          });
       }
     })
     .catch((error) =>
@@ -79,15 +85,18 @@ export const createAppliedUser: Controller = (req, res) => {
         status: 'fail',
         error: error.message,
       })
-    )
+    );
 };
 
 export const updateAppliedUser: Controller = (req, res) => {
+  req.body.updatedAt = new Date();
   const id: string = req.params.id;
   AppliedUser.findOneAndUpdate({ _id: id }, req.body)
     .then((data) => {
       if (!data)
-        return res.status(400).json({ status: 'fail', error: 'AppliedUser not found' });
+        return res
+          .status(400)
+          .json({ status: 'fail', error: 'AppliedUser not found' });
       res.status(200).json({
         status: 'success',
         data,
