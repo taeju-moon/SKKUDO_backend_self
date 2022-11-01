@@ -20,7 +20,7 @@ UserRouter.get('/byClub/:clubId', authByValidationTable, getUsersByClubId);
 
 UserRouter.get('/:id', getOneUser);
 
-UserRouter.post('/', authByValidationTable, createUser);
+UserRouter.post('/', createUser);
 
 UserRouter.patch('/:id', updateUser);
 
