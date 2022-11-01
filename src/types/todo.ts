@@ -12,7 +12,7 @@ export interface ToDoTag {
 export interface ToDo {
   _id: Types.ObjectId;
   clubId: Types.ObjectId;
-  writer: User;
+  writer: string;
   title: string;
   content: string;
   date: Date;

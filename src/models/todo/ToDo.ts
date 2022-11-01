@@ -9,7 +9,7 @@ const toDoSchema = new Schema<ToDoInterface>({
     required: true,
   },
   writer: {
-    type: userSchema,
+    type: String,
     required: true,
   },
   title: {

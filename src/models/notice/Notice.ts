@@ -8,7 +8,10 @@ const noticeSchema = new Schema<NoticeInterface>({
     required: true,
     ref: 'Club',
   },
-  //writer
+  writer: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
     required: true,

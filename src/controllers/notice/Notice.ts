@@ -46,6 +46,7 @@ export const getOneNotice: Controller = (req, res) => {
 };
 
 export const createNotice: Controller = (req, res) => {
+  req.body.writer = req.body.authUser.name;
   const notice = new Notice(req.body);
   notice
     .save()
@@ -56,6 +57,7 @@ export const createNotice: Controller = (req, res) => {
 };
 
 export const updateNotice: Controller = (req, res) => {
+  req.body.writer = req.body.authUser.name;
   const id: string = req.params.id;
   Notice.findOneAndUpdate({ _id: id }, req.body)
     .then((data) => {

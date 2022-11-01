@@ -1,7 +1,5 @@
 import { Controller } from '../../types/common';
 import { ToDoTag } from '../../models/todo/ToDoTag';
-import { ToDo as ToDoInterface } from '../../types/todo';
-import { ToDo } from '../../models/todo/ToDo';
 
 export const getAllToDoTags: Controller = (req, res) => {
   ToDoTag.find()
@@ -15,6 +13,21 @@ export const getAllToDoTags: Controller = (req, res) => {
       res.status(500).json({
         status: 'fail',
         error: error.message,
+      })
+    );
+};
+
+export const getToDoTagsByClubId: Controller = (req, res) => {
+  ToDoTag.find({ clubId: req.params.clubId })
+    .then((todotags) => {
+      if (!todotags)
+        res.status(404).json({ status: 'fail', error: 'todotags not found' });
+      else res.status(200).json({ status: 'success', data: todotags });
+    })
+    .catch((error) =>
+      res.status(400).json({
+        status: 'fail',
+        error,
       })
     );
 };

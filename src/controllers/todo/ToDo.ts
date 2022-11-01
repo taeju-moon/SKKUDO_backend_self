@@ -47,6 +47,7 @@ export const getOneToDo: Controller = (req, res) => {
 };
 
 export const createToDo: Controller = (req, res) => {
+  req.body.writer = req.body.authUser.name;
   const toDo = new ToDo(req.body);
   ToDoTag.find().then((tags) => {
     let k: number = 0;
@@ -84,6 +85,7 @@ export const createToDo: Controller = (req, res) => {
 };
 
 export const updateToDo: Controller = (req, res) => {
+  req.body.writer = req.body.authUser.name;
   const id: string = req.params.id;
   ToDo.findOneAndUpdate({ _id: id }, req.body)
     .then((data) => {

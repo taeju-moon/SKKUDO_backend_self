@@ -69,7 +69,9 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
       User.findOne({ userID: user?.userID })
         .then((user) => {
           if (!user) {
-            res.status(404).json({ status: 'fail', error: 'user not found' });
+            res
+              .status(404)
+              .json({ status: 'fail', error: '인증 정보가 없습니다.' });
           } else {
             const registeredClub: RegisteredClub | null =
               user.findByClubId(clubId);

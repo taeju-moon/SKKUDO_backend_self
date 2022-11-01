@@ -11,7 +11,7 @@ export interface NoticeTag {
 
 export interface Notice {
   _id: Types.ObjectId;
-  writer: User;
+  writer: string;
   clubId: Types.ObjectId; //동아리 ID
   title: string; //제목
   content: string; //내용
