@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { Applier as ApplierInterface } from '../../types/apply';
+import { AppliedUser } from '../../models/apply/AppliedUser';
 import { columnSchema } from '../common/Column';
 
 const applierSchema = new Schema<ApplierInterface>({

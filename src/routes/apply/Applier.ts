@@ -4,22 +4,31 @@ import {
   getApplierByClubId,
   createApplier,
   updateApplier,
-  addApplierColumn,
   deleteApplier,
 } from '../../controllers/apply/Applier';
+import { isThereAppliedUsers } from '../../middlewares/apply';
+import { authByValidationTable } from '../../middlewares/auth';
 
 const ApplierRouter = express.Router();
 
 ApplierRouter.get('/', getAllAppliers);
 
-ApplierRouter.get('/byClub/:clubId', getApplierByClubId);
+ApplierRouter.get('/byClub/:clubId', authByValidationTable, getApplierByClubId);
 
-ApplierRouter.post('/', createApplier);
+ApplierRouter.post('/', authByValidationTable, createApplier);
 
-ApplierRouter.patch('/:id', updateApplier);
+ApplierRouter.patch(
+  '/:clubId',
+  isThereAppliedUsers,
+  authByValidationTable,
+  updateApplier
+);
 
-ApplierRouter.patch('/moreColumns/:id', addApplierColumn);
-
-ApplierRouter.delete('/:id', deleteApplier);
+ApplierRouter.delete(
+  '/:clubId',
+  isThereAppliedUsers,
+  authByValidationTable,
+  deleteApplier
+);
 
 export default ApplierRouter;

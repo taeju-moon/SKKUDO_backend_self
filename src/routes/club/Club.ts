@@ -17,10 +17,10 @@ ClubRouter.get('/:clubId', getOneClub);
 
 ClubRouter.post('/', createClub);
 
-ClubRouter.patch('/:clubId', updateClub);
+ClubRouter.patch('/:clubId', authByValidationTable, updateClub);
 
 ClubRouter.patch('/accept/:clubId', acceptClub);
 
-ClubRouter.delete('/:clubId', deleteClub);
+ClubRouter.delete('/:clubId', authByValidationTable, deleteClub);
 
 export default ClubRouter;

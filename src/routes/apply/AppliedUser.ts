@@ -1,17 +1,18 @@
 import express from 'express';
 import {
   getAllAppliedUsers,
-  getAppliedUserByClubId,
+  getAppliedUsersByClubId,
   createAppliedUser,
   updateAppliedUser,
   deleteAppliedUser,
 } from '../../controllers/apply/AppliedUser';
+import { authByValidationTable } from '../../middlewares/auth';
 
 const AppliedUserRouter = express.Router();
 
 AppliedUserRouter.get('/', getAllAppliedUsers);
 
-AppliedUserRouter.get('/byClub/:clubId', getAppliedUserByClubId);
+AppliedUserRouter.get('/byClub/:clubId', getAppliedUsersByClubId);
 
 AppliedUserRouter.post('/', createAppliedUser);
 
