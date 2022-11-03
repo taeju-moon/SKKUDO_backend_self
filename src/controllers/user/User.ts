@@ -5,6 +5,7 @@ import { Types } from 'mongoose';
 import { Role } from '../../types/common';
 import { RegisteredClub } from './../../types/user';
 import { Club } from '../../models/club/Club';
+import { registeredClubSchema } from '../../models/user/RegisteredClub';
 
 export const getAllUsers: Controller = (req, res) => {
   User.find()
@@ -155,14 +156,23 @@ export const updateRole: Controller = (req, res) => {
       if (!user)
         res.status(404).json({ status: 'fail', error: 'user not found' });
       else {
-        if (!user.registeredClubs.get(clubId))
+        const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
+        if (!registeredClub)
           res.status(404).json({
             status: 'fail',
             error: '해당 유저는 해당 동아리에 속하지 않습니다.',
           });
         else {
-          user.registeredClubs.get(clubId).role = updatingRole;
-          res.status(200).json({ status: 'success', data: user });
+          registeredClub.role = updatingRole;
+          user.registeredClubs.set(clubId, registeredClub);
+          user
+            .save()
+            .then((data: RegisteredClub) =>
+              res.status(200).json({ status: 'success', data })
+            )
+            .catch((error: any) =>
+              res.status(400).json({ status: 'fail', error: error.message })
+            );
         }
       }
     })
@@ -173,15 +183,15 @@ export const updateRole: Controller = (req, res) => {
 
 export const deregisterClub: Controller = (req, res) => {
   const id = req.params.id;
-  const clubId: string = req.params.clubId;
+  const clubId = req.params.clubId;
   User.findOne({ userID: id })
     .then((user) => {
       if (!user)
         res.status(404).json({ status: 'fail', error: 'user not found' });
       else {
-        const updated: RegisteredClub | undefined =
+        const registeredClub: RegisteredClub | undefined =
           user.registeredClubs.get(clubId);
-        if (!updated)
+        if (!registeredClub)
           res.status(404).json({
             status: 'fail',
             error: '해당 유저는 해당 동아리에 속하지 않습니다.',
