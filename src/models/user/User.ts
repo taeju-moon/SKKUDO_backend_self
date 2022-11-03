@@ -112,7 +112,7 @@ userSchema.methods.findByClubId = function (
   clubId: string
 ): RegisteredClub | null {
   const user = this;
-  return user.registeredClubs[clubId];
+  return user.registeredClubs.get(clubId);
 };
 
 userSchema.statics.findByToken = function (

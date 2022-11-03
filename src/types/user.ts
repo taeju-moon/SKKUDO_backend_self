@@ -13,9 +13,7 @@ export interface RegisteredClub {
   updatedAt: Date;
 }
 
-export interface RegisteredClubs {
-  [key: string]: RegisteredClub;
-}
+export type RegisteredClubs = Map<string, RegisteredClub>;
 
 export interface User {
   _id: Types.ObjectId;

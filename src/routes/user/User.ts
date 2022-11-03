@@ -26,18 +26,10 @@ UserRouter.patch('/:id', updateUser);
 
 UserRouter.delete('/:id', deleteUser);
 
-UserRouter.patch(
-  '/club/register/:id/:clubId',
-  authByValidationTable,
-  registerClub
-);
+UserRouter.patch('/club/register/:id/:clubId', registerClub);
 
-UserRouter.patch(
-  '/club/deregister/:id/:clubId',
-  authByValidationTable,
-  deregisterClub
-);
+UserRouter.patch('/club/deregister/:id/:clubId', deregisterClub);
 
-UserRouter.patch('/club/role/:id/:clubId', authByValidationTable, updateRole);
+UserRouter.patch('/club/role/:id/:clubId', updateRole);
 
 export default UserRouter;

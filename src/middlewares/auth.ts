@@ -28,8 +28,8 @@ export const authByClub: Middleware = (req, res, next) => {
       return res
         .status(401)
         .json({ status: 'fail', error: '인증 정보가 없습니다' });
-    const identifiedUser: UserInterface = user;
-    if (identifiedUser.registeredClubs[String(clubId)]) next();
+    const identifiedUser: any = user;
+    if (identifiedUser.registeredClubs.get(String(clubId))) next();
     else {
       res.status(403).json({
         status: 'fail',
