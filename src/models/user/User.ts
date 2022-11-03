@@ -37,8 +37,9 @@ const userSchema = new Schema<UserInterface>({
     },
   },
   registeredClubs: {
-    type: [registeredClubSchema],
-    default: [],
+    type: Map,
+    of: registeredClubSchema,
+    default: {},
   },
   token: {
     type: String,
@@ -111,13 +112,7 @@ userSchema.methods.findByClubId = function (
   clubId: string
 ): RegisteredClub | null {
   const user = this;
-  let usingClub: RegisteredClub | null = null;
-  user.registeredClubs.forEach((club: RegisteredClub) => {
-    if (String(club.clubId) === clubId) {
-      usingClub = club;
-    }
-  });
-  return usingClub;
+  return user.registeredClubs[clubId];
 };
 
 userSchema.statics.findByToken = function (

@@ -29,17 +29,13 @@ export const authByClub: Middleware = (req, res, next) => {
         .status(401)
         .json({ status: 'fail', error: '인증 정보가 없습니다' });
     const identifiedUser: UserInterface = user;
-    identifiedUser.registeredClubs.forEach((item) => {
-      if (String(item.clubId) === clubId) {
-        req.body.authToken = token;
-        req.body.authUser = user;
-        next();
-      }
-    });
-    res.status(403).json({
-      status: 'fail',
-      error: '인증 정보가 해당 동아리에 속하지 않습니다.',
-    });
+    if (identifiedUser.registeredClubs[String(clubId)]) next();
+    else {
+      res.status(403).json({
+        status: 'fail',
+        error: '인증 정보가 해당 동아리에 속하지 않습니다.',
+      });
+    }
   });
 };
 
