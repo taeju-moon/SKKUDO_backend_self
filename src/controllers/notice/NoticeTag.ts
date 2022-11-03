@@ -17,6 +17,17 @@ export const getAllNoticeTags: Controller = (req, res) => {
     );
 };
 
+export const getNoticeTagsByClubId: Controller = (req, res) => {
+  const clubId: string = req.params.clubId;
+  NoticeTag.find({ clubId })
+    .then((tags) => {
+      res.status(200).json({ status: 'success', data: tags });
+    })
+    .catch((error) =>
+      res.status(400).json({ status: 'fail', error: error.message })
+    );
+};
+
 export const getOneNoticeTag: Controller = (req, res) => {
   const id: string = req.params.id;
   NoticeTag.findById(id)

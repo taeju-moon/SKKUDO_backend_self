@@ -7,11 +7,15 @@ import {
   updateNotice,
   deleteNotice,
 } from '../../controllers/notice/Notice';
-import { authByValidationTable, auth } from '../../middlewares/auth';
+import {
+  authByValidationTable,
+  auth,
+  authBySuperUser,
+} from '../../middlewares/auth';
 
 const NoticeRouter = express.Router();
 
-NoticeRouter.get('/', getAllNotices);
+NoticeRouter.get('/', auth, authBySuperUser, getAllNotices);
 
 NoticeRouter.get('/club/:id', authByValidationTable, getNoticesByClubId);
 

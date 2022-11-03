@@ -1,6 +1,6 @@
 import { Schema, model, Model, Types } from 'mongoose';
 import { User, User as UserInterface, RegisteredClub } from '../../types/user';
-import { Location } from '../../types/common';
+import { Location, Column } from '../../types/common';
 import { registeredClubSchema } from './RegisteredClub';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -115,6 +115,52 @@ userSchema.methods.findByClubId = function (
   return user.registeredClubs.get(clubId);
 };
 
+userSchema.methods.addColumn = function (
+  clubId: string,
+  column: Column,
+  value: string
+) {
+  const user = this;
+  const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
+  registeredClub.moreColumns.push({ column, value });
+  user.registeredClubs.set(clubId, registeredClub);
+  user.save();
+};
+
+userSchema.methods.updateValue = function (
+  clubId: string,
+  key: string,
+  value: string
+) {
+  const user = this;
+  const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
+  registeredClub.moreColumns.forEach((column) => {
+    if (column.column.key === key) column.value = value;
+  });
+  user.registeredClubs.set(clubId, registeredClub);
+  user.save();
+};
+
+userSchema.methods.updateColumn = function (
+  clubId: string,
+  key: string,
+  newColumn: Column
+) {
+  const user = this;
+  const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
+  registeredClub.moreColumns.forEach((column) => {
+    if (column.column.key === key) column.column = newColumn;
+  });
+  user.save();
+};
+
+userSchema.methods.deleteColumn = function (clubId: string, key: string) {
+  const user = this;
+  console.log(user.registeredClubs.get(clubId)[key]);
+  delete user.registeredClubs.get(clubId)[key];
+  user.save();
+};
+
 userSchema.statics.findByToken = function (
   token: any,
   callback: (err: any, user: UserInterface | null) => void
@@ -143,6 +189,10 @@ interface UserMethods {
   generateToken(
     callback: (error: any, user: UserInterface | null) => void
   ): void;
+  addColumn(clubId: string, column: Column, value: string): void;
+  updateValue(clubId: string, key: string, value: string): void;
+  updateColumn(clubId: string, key: string, newColumn: Column): void;
+  deleteColumn(clubId: string, key: string): void;
   findByClubId(clubId: string): RegisteredClub | null;
 }
 

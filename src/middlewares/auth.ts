@@ -39,6 +39,18 @@ export const authByClub: Middleware = (req, res, next) => {
   });
 };
 
+//auth 미들웨어를 통과한 이후 시행해야함
+export const authBySuperUser: Middleware = (req, res, next) => {
+  const user: UserInterface = req.body.authUser;
+  if (process.env.SUPER_USERS?.includes(user.userID)) {
+    next();
+  } else {
+    res
+      .status(403)
+      .json({ status: 'fail', error: '관리자만 수행할 수 있는 기능입니다.' });
+  }
+};
+
 export const authByValidationTable: Middleware = async (req, res, next) => {
   const method: Method = req.method as Method;
   const originalUrl = req.originalUrl;
