@@ -22,6 +22,7 @@ const noticeSchema = new Schema<NoticeInterface>({
   },
   tags: {
     type: [noticeTagSchema],
+    default: [],
   },
   createdAt: Date,
   updatedAt: Date,

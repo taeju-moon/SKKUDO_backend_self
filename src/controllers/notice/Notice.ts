@@ -1,5 +1,6 @@
 import { Controller } from '../../types/common';
 import { Notice } from '../../models/notice/Notice';
+import { read } from 'fs';
 
 export const getAllNotices: Controller = (req, res) => {
   Notice.find()
@@ -47,6 +48,7 @@ export const getOneNotice: Controller = (req, res) => {
 
 export const createNotice: Controller = (req, res) => {
   req.body.writer = req.body.authUser.name;
+  console.log(req.body);
   const notice = new Notice(req.body);
   notice
     .save()
