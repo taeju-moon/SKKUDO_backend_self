@@ -13,13 +13,15 @@ export interface RegisteredClub {
   updatedAt: Date;
 }
 
+export type RegisteredClubs = Map<string, RegisteredClub>;
+
 export interface User {
   _id: Types.ObjectId;
   studentId: string;
   userID: string;
   password: string;
   location: Location;
-  registeredClubs: RegisteredClub[];
+  registeredClubs: RegisteredClubs;
   name: string;
   major: string;
   token: string;

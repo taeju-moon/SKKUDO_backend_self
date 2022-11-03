@@ -24,18 +24,10 @@ export const getAllUsers: Controller = (req, res) => {
 
 export const getUsersByClubId: Controller = (req, res) => {
   const clubId: string = req.params.clubId;
-  const refine = (registeredClubs: RegisteredClub[], clubId: string) => {
-    let found = 0;
-    registeredClubs.forEach((club) => {
-      if (String(club.clubId) === clubId) found = 1;
-    });
-    return found;
-  };
-
   User.find()
     .then(async (users: UserInterface[]) => {
       const refinedUsers: UserInterface[] = await users.filter((user) => {
-        return refine(user.registeredClubs, clubId);
+        return user.registeredClubs.get(clubId);
       });
       if (!refinedUsers)
         res.status(404).json({ status: 'fail', error: '404 not found' });
@@ -123,33 +115,30 @@ export const updateUser: Controller = (req, res) => {
 
 export const registerClub: Controller = async (req, res) => {
   const id = req.params.id;
-  const clubId = req.params.clubId;
+  const clubId: string = req.params.clubId;
   const { initialRole, moreColumns } = req.body;
   User.findOne({ userID: id })
-    .then(async (user) => {
+    .then((user) => {
       if (!user)
         res.status(404).json({ status: 'fail', error: 'user not found' });
       else {
-        const usingClub = await Club.findById(clubId);
-        if (!usingClub)
-          res.status(404).json({ status: 'fail', error: 'club not found' });
-        const newRegisteredClub: RegisteredClub = {
-          clubId: new Types.ObjectId(clubId),
-          role: initialRole,
-          clubName: usingClub?.name as string,
-          moreColumns: moreColumns,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        };
-        user.registeredClubs = [...user.registeredClubs, newRegisteredClub];
-        user
-          .save()
-          .then((user) =>
-            res.status(200).json({ status: 'success', data: user })
-          )
-          .catch((error) =>
-            res.status(400).json({ status: 'fail', error: error.message })
-          );
+        Club.findById(clubId).then(async (usingClub) => {
+          const newRegisteredClub: RegisteredClub = {
+            clubId: new Types.ObjectId(clubId),
+            role: initialRole,
+            clubName: usingClub?.name as string,
+            moreColumns: moreColumns,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          };
+          user.registeredClubs.set(clubId, newRegisteredClub);
+          user
+            .save()
+            .then((data) => res.status(200).json({ status: 'success', data }))
+            .catch((error) =>
+              res.status(500).json({ status: 'fail', error: error.message })
+            );
+        });
       }
     })
     .catch((error) =>
@@ -162,31 +151,18 @@ export const updateRole: Controller = (req, res) => {
   const clubId = req.params.clubId;
   const updatingRole: Role = req.body.updatingRole;
   User.findOne({ userID: id })
-    .then((user) => {
+    .then((user: any) => {
       if (!user)
         res.status(404).json({ status: 'fail', error: 'user not found' });
       else {
-        let found = 0;
-        user.registeredClubs.forEach((registeredClub: RegisteredClub) => {
-          if (String(registeredClub.clubId) === clubId) {
-            registeredClub.role = updatingRole;
-            found = 1;
-          }
-        });
-        if (found) {
-          user
-            .save()
-            .then((user) =>
-              res.status(200).json({ status: 'success', data: user })
-            )
-            .catch((error) =>
-              res.status(500).json({ status: 'fail', error: error.message })
-            );
-        } else {
+        if (!user.registeredClubs.get(clubId))
           res.status(404).json({
             status: 'fail',
             error: '해당 유저는 해당 동아리에 속하지 않습니다.',
           });
+        else {
+          user.registeredClubs.get(clubId).role = updatingRole;
+          res.status(200).json({ status: 'success', data: user });
         }
       }
     })
@@ -197,22 +173,21 @@ export const updateRole: Controller = (req, res) => {
 
 export const deregisterClub: Controller = (req, res) => {
   const id = req.params.id;
-  const clubId = req.params.clubId;
+  const clubId: string = req.params.clubId;
   User.findOne({ userID: id })
     .then((user) => {
       if (!user)
         res.status(404).json({ status: 'fail', error: 'user not found' });
       else {
-        const updated = user.registeredClubs.filter(
-          (club) => String(club.clubId) !== clubId
-        );
-        if (updated.length === user.registeredClubs.length)
+        const updated: RegisteredClub | undefined =
+          user.registeredClubs.get(clubId);
+        if (!updated)
           res.status(404).json({
             status: 'fail',
             error: '해당 유저는 해당 동아리에 속하지 않습니다.',
           });
         else {
-          user.registeredClubs = updated;
+          user.registeredClubs.delete(clubId);
           user
             .save()
             .then((user) =>
