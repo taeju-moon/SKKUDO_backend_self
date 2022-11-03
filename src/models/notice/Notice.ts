@@ -20,7 +20,7 @@ const noticeSchema = new Schema<NoticeInterface>({
     type: String,
     required: true,
   },
-  tags: {
+  noticeTags: {
     type: [noticeTagSchema],
     default: [],
   },

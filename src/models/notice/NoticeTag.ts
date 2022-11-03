@@ -28,7 +28,7 @@ noticeTagSchema.pre('remove', function (next) {
     .then((notices: NoticeInterface[]) => {
       let usingTag: NoticeTagInterface | null = null;
       notices.forEach((notice) => {
-        notice.tags.forEach((item) => {
+        notice.noticeTags.forEach((item) => {
           if (item.name === noticeTag.name) usingTag = item;
         });
       });
