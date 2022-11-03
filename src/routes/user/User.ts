@@ -10,11 +10,15 @@ import {
   deregisterClub,
   updateRole,
 } from '../../controllers/user/User';
-import { authByValidationTable } from '../../middlewares/auth';
+import {
+  auth,
+  authBySuperUser,
+  authByValidationTable,
+} from '../../middlewares/auth';
 
 const UserRouter = express.Router();
 
-UserRouter.get('/', getAllUsers);
+UserRouter.get('/', auth, authBySuperUser, getAllUsers);
 
 UserRouter.get('/byClub/:clubId', authByValidationTable, getUsersByClubId);
 

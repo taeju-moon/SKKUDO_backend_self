@@ -6,7 +6,7 @@ import { Notice } from './Notice';
 
 const noticeTagSchema = new Schema<NoticeTagInterface>({
   clubId: {
-    type: Schema.Types.ObjectId,
+    type: String,
     required: true,
     ref: 'Club',
   },
