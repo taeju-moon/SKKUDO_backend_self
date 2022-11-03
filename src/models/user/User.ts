@@ -121,10 +121,9 @@ userSchema.methods.addColumn = function (
   value: string
 ) {
   const user = this;
-  user.registeredClubs.forEach((club: RegisteredClub) => {
-    if (String(club.clubId) !== clubId) return;
-    club.moreColumns = [...club.moreColumns, { column, value }];
-  });
+  const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
+  registeredClub.moreColumns.push({ column, value });
+  user.registeredClubs.set(clubId, registeredClub);
   user.save();
 };
 
@@ -134,14 +133,8 @@ userSchema.methods.updateValue = function (
   value: string
 ) {
   const user = this;
-  user.registeredClubs.forEach((club: RegisteredClub) => {
-    if (String(club.clubId) !== clubId) return;
-    club.moreColumns.forEach((elem) => {
-      if (elem.column.key === key) {
-        elem.value = value;
-      }
-    });
-  });
+  const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
+
   user.save();
 };
 
@@ -164,10 +157,8 @@ userSchema.methods.updateColumn = function (
 
 userSchema.methods.deleteColumn = function (clubId: string, key: string) {
   const user = this;
-  user.registeredClubs.forEach((club: RegisteredClub) => {
-    if (String(club.clubId) !== clubId) return;
-    club.moreColumns.filter((elem) => elem.column.key !== key);
-  });
+  console.log(user.registeredClubs.get(clubId)[key]);
+  delete user.registeredClubs.get(clubId)[key];
   user.save();
 };
 
