@@ -1,5 +1,9 @@
 import { Controller } from '../../types/common';
 import { Club } from '../../models/club/Club';
+import { Types } from 'mongoose';
+import { User } from '../../models/user/User';
+import { Column } from '../../types/common';
+import { RegisteredClub as RegisteredClubInterface } from '../../types/user';
 
 export const getAllClubs: Controller = (req, res) => {
   //미들웨어로 accepted 된 것만 보여주기
@@ -61,6 +65,11 @@ export const updateClub: Controller = (req, res) => {
       status: 'fail',
       error: "can't accept while updating",
     });
+  if (req.body.userColumns)
+    res.status(403).json({
+      status: 'fail',
+      error: '유저 컬럼은 별도의 라우터를 사용하여 수정하세요.',
+    });
   Club.findOneAndUpdate({ _id: id }, req.body)
     .then((data) => {
       if (!data)
@@ -103,7 +112,7 @@ export const acceptClub: Controller = (req, res) => {
 };
 
 export const deleteClub: Controller = (req, res) => {
-  const id: string = req.params.id;
+  const id: string = req.params.clubId;
   Club.findByIdAndDelete(id)
     .then(() =>
       res.status(200).json({
@@ -114,4 +123,69 @@ export const deleteClub: Controller = (req, res) => {
     .catch((error) =>
       res.status(400).json({ status: 'fail', error: error.message })
     );
+  //모든 클럽과 관련한 모델들 지우기
+};
+
+export const addClubUserColumn: Controller = async (req, res) => {
+  try {
+    const clubId: string = req.params.clubId;
+    const newColumn: Column = req.body.userColumn;
+    const club: any = await Club.findOne({ _id: clubId });
+    if (!club)
+      res.status(404).json({ status: 'fail', error: 'club not found' });
+    else {
+      club.userColumns = [...club.userColumns, newColumn];
+      req.body.refinedUsers.forEach((user: any) => {
+        user.addColumn(clubId, newColumn, '');
+      });
+      club.save();
+    }
+    res.status(200).json({ status: 'success', data: club });
+  } catch (error: any) {
+    res.status(400).json({ status: 'fail', error: error.message });
+  }
+};
+
+export const updateClubUserColumn: Controller = async (req, res) => {
+  try {
+    const clubId: string = req.params.clubId;
+    const key: string = req.body.key;
+    const newColumn: Column = req.body.newColumn;
+    const club = await Club.findOne({ _id: clubId });
+    if (!club)
+      res.status(404).json({ status: 'fail', error: 'club not found' });
+    else {
+      club.userColumns = club.userColumns.map((column) => {
+        if (column.key === key) return newColumn;
+        else return column;
+      });
+      req.body.refinedUsers.forEach((user: any) => {
+        user.updateColumn(clubId, key, newColumn);
+      });
+      club.save();
+    }
+  } catch (error: any) {
+    res.status(400).json({ status: 'fail', error: error.message });
+  }
+};
+
+export const deleteClubUserColumn: Controller = async (req, res) => {
+  try {
+    const clubId: string = req.params.clubId;
+    const key: string = req.body.key;
+    const club = await Club.findOne({ _id: clubId });
+    if (!club)
+      res.status(404).json({ status: 'fail', error: 'club not found' });
+    else {
+      club.userColumns = club.userColumns.filter(
+        (userColumn) => userColumn.key !== key
+      );
+      req.body.refinedUsers.forEach((user: any) => {
+        user.deleteColumn(clubId, key);
+      });
+      club.save();
+    }
+  } catch (error: any) {
+    res.status(400).json({ status: 'fail', error: error.message });
+  }
 };

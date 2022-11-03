@@ -244,3 +244,17 @@ export const deleteUser: Controller = (req, res) => {
       })
     );
 };
+
+export const updateUsercolumn: Controller = (req, res) => {
+  const { key, value } = req.body.key;
+  const id = req.params.id;
+  const clubId = req.params.clubId;
+  User.findById(id).then((user) => {
+    if (!user)
+      res.status(404).json({ status: 'fail', error: 'user not found' });
+    else {
+      user.updateValue(clubId, key, value);
+      res.status(200).json({ status: 'success', data: user });
+    }
+  });
+};

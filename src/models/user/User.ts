@@ -1,6 +1,6 @@
 import { Schema, model, Model, Types } from 'mongoose';
 import { User, User as UserInterface, RegisteredClub } from '../../types/user';
-import { Location } from '../../types/common';
+import { Location, Column } from '../../types/common';
 import { registeredClubSchema } from './RegisteredClub';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -120,6 +120,62 @@ userSchema.methods.findByClubId = function (
   return usingClub;
 };
 
+userSchema.methods.addColumn = function (
+  clubId: string,
+  column: Column,
+  value: string
+) {
+  const user = this;
+  user.registeredClubs.forEach((club: RegisteredClub) => {
+    if (String(club.clubId) !== clubId) return;
+    club.moreColumns = [...club.moreColumns, { column, value }];
+  });
+  user.save();
+};
+
+userSchema.methods.updateValue = function (
+  clubId: string,
+  key: string,
+  value: string
+) {
+  const user = this;
+  user.registeredClubs.forEach((club: RegisteredClub) => {
+    if (String(club.clubId) !== clubId) return;
+    club.moreColumns.forEach((elem) => {
+      if (elem.column.key === key) {
+        elem.value = value;
+      }
+    });
+  });
+  user.save();
+};
+
+userSchema.methods.updateColumn = function (
+  clubId: string,
+  key: string,
+  newColumn: Column
+) {
+  const user = this;
+  user.registeredClubs.forEach((club: RegisteredClub) => {
+    if (String(club.clubId) !== clubId) return;
+    club.moreColumns.forEach((elem) => {
+      if (elem.column.key === key) {
+        elem.column = newColumn;
+      }
+    });
+  });
+  user.save();
+};
+
+userSchema.methods.deleteColumn = function (clubId: string, key: string) {
+  const user = this;
+  user.registeredClubs.forEach((club: RegisteredClub) => {
+    if (String(club.clubId) !== clubId) return;
+    club.moreColumns.filter((elem) => elem.column.key !== key);
+  });
+  user.save();
+};
+
 userSchema.statics.findByToken = function (
   token: any,
   callback: (err: any, user: UserInterface | null) => void
@@ -148,6 +204,10 @@ interface UserMethods {
   generateToken(
     callback: (error: any, user: UserInterface | null) => void
   ): void;
+  addColumn(clubId: string, column: Column, value: string): void;
+  updateValue(clubId: string, key: string, value: string): void;
+  updateColumn(clubId: string, key: string, newColumn: Column): void;
+  deleteColumn(clubId: string, key: string): void;
   findByClubId(clubId: string): RegisteredClub | null;
 }
 
