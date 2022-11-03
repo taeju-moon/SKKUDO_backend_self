@@ -57,8 +57,10 @@ const clubSchema = new Schema<ClubInterface>({
 
 const Club = model<ClubInterface>('Club', clubSchema);
 
-clubSchema.virtual('clubId').get(function () {
-  return this._id;
+clubSchema.pre(/^find/, function (next) {
+  const copied: any = this;
+  copied.find({ accepted: true });
+  next();
 });
 
 export { Club, clubSchema };

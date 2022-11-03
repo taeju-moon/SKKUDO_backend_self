@@ -7,7 +7,7 @@ import { RegisteredClub as RegisteredClubInterface } from '../../types/user';
 
 export const getAllClubs: Controller = (req, res) => {
   //미들웨어로 accepted 된 것만 보여주기
-  Club.find()
+  Club.find({ accepted: true })
     .then((clubs) =>
       res.status(200).json({
         status: 'success',

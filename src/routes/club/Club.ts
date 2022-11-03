@@ -15,7 +15,7 @@ import {
 
 const ClubRouter = express.Router();
 
-ClubRouter.get('/', auth, authBySuperUser, getAllClubs);
+ClubRouter.get('/', getAllClubs);
 
 ClubRouter.get('/:clubId', getOneClub);
 
