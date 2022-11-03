@@ -58,6 +58,12 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
   const clubId: string = req.params.clubId
     ? req.params.clubId
     : req.body.clubId;
+  if (!clubId) {
+    res
+      .status(500)
+      .json({ status: 'fail', error: 'clubId를 params또는 body에 보내주세요' });
+    return;
+  }
   const validation: ValidationInterface | null = await Validation.findOne({
     clubId,
   });

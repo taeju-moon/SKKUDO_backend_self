@@ -18,7 +18,7 @@ export const getAllNotices: Controller = (req, res) => {
 };
 
 export const getNoticesByClubId: Controller = (req, res) => {
-  Notice.find({ clubId: req.params.id })
+  Notice.find({ clubId: req.params.clubId })
     .then((notices) => {
       if (!notices)
         res.status(404).json({ status: 'fail', error: 'notices not found' });
