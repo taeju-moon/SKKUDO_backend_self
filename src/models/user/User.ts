@@ -134,7 +134,10 @@ userSchema.methods.updateValue = function (
 ) {
   const user = this;
   const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
-
+  registeredClub.moreColumns.forEach((column) => {
+    if (column.column.key === key) column.value = value;
+  });
+  user.registeredClubs.set(clubId, registeredClub);
   user.save();
 };
 
@@ -144,13 +147,9 @@ userSchema.methods.updateColumn = function (
   newColumn: Column
 ) {
   const user = this;
-  user.registeredClubs.forEach((club: RegisteredClub) => {
-    if (String(club.clubId) !== clubId) return;
-    club.moreColumns.forEach((elem) => {
-      if (elem.column.key === key) {
-        elem.column = newColumn;
-      }
-    });
+  const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
+  registeredClub.moreColumns.forEach((column) => {
+    if (column.column.key === key) column.column = newColumn;
   });
   user.save();
 };
