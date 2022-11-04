@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
 import { Notice as NoticeInterface } from '../../types/notice';
-import { noticeTagSchema } from './NoticeTag';
 
 const noticeSchema = new Schema<NoticeInterface>({
   clubId: {
@@ -21,7 +20,7 @@ const noticeSchema = new Schema<NoticeInterface>({
     required: true,
   },
   noticeTags: {
-    type: [noticeTagSchema],
+    type: [String],
     default: [],
   },
   createdAt: Date,

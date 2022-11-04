@@ -47,8 +47,6 @@ export const getOneNotice: Controller = (req, res) => {
 };
 
 export const createNotice: Controller = (req, res) => {
-  req.body.writer = req.body.authUser.name;
-  console.log(req.body);
   const notice = new Notice(req.body);
   notice
     .save()

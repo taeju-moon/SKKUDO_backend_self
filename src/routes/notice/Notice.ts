@@ -21,7 +21,7 @@ NoticeRouter.get('/club/:clubId', authByValidationTable, getNoticesByClubId);
 
 NoticeRouter.get('/:id', getOneNotice);
 
-NoticeRouter.post('/', authByValidationTable, auth, createNotice);
+NoticeRouter.post('/', createNotice);
 
 NoticeRouter.patch('/:id', authByValidationTable, auth, updateNotice);
 

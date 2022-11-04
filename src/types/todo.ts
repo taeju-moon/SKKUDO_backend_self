@@ -19,7 +19,7 @@ export interface ToDo {
   startTime: Date;
   endTime: Date;
   attendingUsers: string[]; //유저들의 studentId의 배열
-  tags: ToDoTag[];
+  tags: string[];
   createdAt: Date;
   updatedAt: Date;
 }

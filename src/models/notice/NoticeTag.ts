@@ -8,7 +8,6 @@ const noticeTagSchema = new Schema<NoticeTagInterface>({
   clubId: {
     type: String,
     required: true,
-    ref: 'Club',
   },
   name: {
     type: String,
@@ -26,11 +25,11 @@ noticeTagSchema.pre('remove', function (next) {
   const noticeTag = this;
   Notice.find({ clubId: noticeTag.clubId })
     .then((notices: NoticeInterface[]) => {
-      let usingTag: NoticeTagInterface | null = null;
+      let usingTag: boolean = false;
       notices.forEach((notice) => {
-        notice.noticeTags.forEach((item) => {
-          if (item.name === noticeTag.name) usingTag = item;
-        });
+        if (notice.noticeTags.indexOf(noticeTag.name) >= 0) {
+          usingTag = true;
+        }
       });
       if (usingTag) next(Error('해당 태그를 사용하는 공지가 있습니다.'));
       else next();

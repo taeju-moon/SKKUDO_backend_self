@@ -20,12 +20,12 @@ toDoTagSchema.pre('remove', function (next) {
   const toDoTag = this;
   ToDo.find({ clubId: toDoTag.clubId })
     .then((todos: ToDoInterface[]) => {
-      let usingTag: ToDoTagInterface | null = null;
-      todos.forEach((todo) =>
-        todo.tags.forEach((tag) => {
-          if (tag.name === toDoTag.name) usingTag = tag;
-        })
-      );
+      let usingTag: boolean = false;
+      todos.forEach((todo) => {
+        if (todo.tags.indexOf(toDoTag.name) >= 0) {
+          usingTag = true;
+        }
+      });
       if (usingTag) next(Error('해당 태그를 사용하고 있는 일정이 있습니다.'));
       else next();
     })
