@@ -32,7 +32,7 @@ const validationSchema = new Schema<ValidationInterface>({
       values: roles,
       message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
     },
-    default: '운영진',
+    default: '부원',
   },
   userWrite: {
     type: String,
