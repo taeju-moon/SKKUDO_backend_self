@@ -15,9 +15,9 @@ import {
 
 const ApplierRouter = express.Router();
 
-ApplierRouter.get('/', auth, authBySuperUser, getAllAppliers);
+ApplierRouter.get('/', getAllAppliers);
 
-ApplierRouter.get('/byClub/:clubId', authByValidationTable, getApplierByClubId);
+ApplierRouter.get('/byClub/:clubId', getApplierByClubId);
 
 ApplierRouter.post('/', authByValidationTable, createApplier);
 
