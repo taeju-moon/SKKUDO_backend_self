@@ -17,7 +17,7 @@ const ToDoRouter = express.Router();
 
 ToDoRouter.get('/', auth, authBySuperUser, getAllToDos);
 
-ToDoRouter.get('/club/:id', authByValidationTable, getToDosByClubId);
+ToDoRouter.get('/club/:clubId', authByValidationTable, getToDosByClubId);
 
 ToDoRouter.get('/:id', getOneToDo);
 

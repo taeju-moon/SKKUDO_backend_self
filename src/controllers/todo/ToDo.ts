@@ -19,7 +19,7 @@ export const getAllToDos: Controller = (req, res) => {
 };
 
 export const getToDosByClubId: Controller = (req, res) => {
-  ToDo.find({ clubId: req.params.id })
+  ToDo.find({ clubId: req.params.clubId })
     .then((todos) => {
       if (!todos)
         res.status(404).json({ status: 'fail', error: 'todos not found' });
