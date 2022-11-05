@@ -5,6 +5,7 @@ const clubTypeSchema = new Schema<ClubTypeInterface>({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   createdAt: {
     type: Date,

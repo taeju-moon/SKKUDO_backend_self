@@ -12,6 +12,7 @@ const noticeTagSchema = new Schema<NoticeTagInterface>({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   createdAt: {
     type: Date,

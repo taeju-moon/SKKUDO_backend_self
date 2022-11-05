@@ -11,6 +11,7 @@ const toDoTagSchema = new Schema<ToDoTagInterface>({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   createdAt: Date,
   updatedAt: Date,
