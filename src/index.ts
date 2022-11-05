@@ -47,6 +47,8 @@ import AppliedUserRouter from './routes/apply/AppliedUser';
 import StudyTagRouter from './routes/study/StudyTag';
 import StudyRouter from './routes/study/Study';
 import BudgetRouter from './routes/budget/Budget';
+import MinuteTagRouter from './routes/minute/MinuteTag';
+import MinuteRouter from './routes/minute/Minute';
 
 app.use('/clubs/clubTypes', ClubTypeRouter);
 app.use('/clubs/clubs', ClubRouter);
@@ -62,6 +64,8 @@ app.use('/applies/appliedUsers', AppliedUserRouter);
 app.use('/studies/studyTags', StudyTagRouter);
 app.use('/studies/studies', StudyRouter);
 app.use('/budgets/budgets', BudgetRouter);
+app.use('/minutes/minuteTags', MinuteTagRouter);
+app.use('/minutes/minutes', MinuteRouter);
 
 app.listen(8000, () => {
   console.log('8000번 포트 대기중...');
