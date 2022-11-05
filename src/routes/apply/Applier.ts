@@ -17,7 +17,7 @@ const ApplierRouter = express.Router();
 
 ApplierRouter.get('/', getAllAppliers);
 
-ApplierRouter.get('/byClub/:clubId', getApplierByClubId);
+ApplierRouter.get('/byClub/:clubId', auth, getApplierByClubId);
 
 ApplierRouter.post('/', authByValidationTable, createApplier);
 
