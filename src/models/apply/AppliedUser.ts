@@ -10,10 +10,13 @@ const appliedUserSchema = new Schema<AppliedUserInterface>({
     ref: 'Club',
     required: true,
   },
+  userID: {
+    type: String,
+    required: true,
+  },
   studentId: {
     type: String,
     required: true,
-    unique: true,
   },
   name: {
     type: String,
