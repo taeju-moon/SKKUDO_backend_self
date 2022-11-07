@@ -7,6 +7,7 @@ import {
   updateUser,
   deleteUser,
   registerClub,
+  registerPassedUsers,
   deregisterClub,
   updateRole,
 } from '../../controllers/user/User';
@@ -29,6 +30,8 @@ UserRouter.post('/', createUser);
 UserRouter.patch('/:id', updateUser);
 
 UserRouter.delete('/:id', deleteUser);
+
+UserRouter.patch('/club/register/many/:clubId', registerPassedUsers);
 
 UserRouter.patch('/club/register/:id/:clubId', registerClub);
 
