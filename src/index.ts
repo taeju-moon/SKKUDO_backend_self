@@ -10,7 +10,10 @@ const app = express();
 
 //CORS
 const corsOption = {
-  origin: 'http://localhost:3000',
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? 'http://54.180.30.58:3000'
+      : 'http://localhost:8000',
   credentials: true,
 };
 
