@@ -6,18 +6,26 @@ import {
   updateAppliedUser,
   deleteAppliedUser,
 } from '../../controllers/apply/AppliedUser';
-import { authByValidationTable } from '../../middlewares/auth';
+import {
+  authByValidationTable,
+  auth,
+  authBySuperUser,
+} from '../../middlewares/auth';
 
 const AppliedUserRouter = express.Router();
 
-AppliedUserRouter.get('/', getAllAppliedUsers);
+AppliedUserRouter.get('/', auth, authBySuperUser, getAllAppliedUsers);
 
-AppliedUserRouter.get('/byClub/:clubId', getAppliedUsersByClubId);
+AppliedUserRouter.get(
+  '/byClub/:clubId',
+  authByValidationTable,
+  getAppliedUsersByClubId
+);
 
-AppliedUserRouter.post('/', createAppliedUser);
+AppliedUserRouter.post('/', authByValidationTable, createAppliedUser);
 
-AppliedUserRouter.patch('/:id', updateAppliedUser);
+AppliedUserRouter.patch('/:id', authByValidationTable, updateAppliedUser);
 
-AppliedUserRouter.delete('/:id', deleteAppliedUser);
+AppliedUserRouter.delete('/:id', authByValidationTable, deleteAppliedUser);
 
 export default AppliedUserRouter;
