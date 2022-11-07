@@ -2,7 +2,7 @@ import { Role, Location, Column } from './common';
 import { Types } from 'mongoose';
 
 export interface RegisteredClub {
-  clubId: Types.ObjectId;
+  clubId: string;
   clubName: string;
   role: Role;
   moreColumns: {

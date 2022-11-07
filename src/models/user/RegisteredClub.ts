@@ -7,7 +7,7 @@ const role: Role[] = ['회장', '부회장', '운영진', '부원'];
 
 const registeredClubSchema = new Schema<RegisteredClubInterface>({
   clubId: {
-    type: Schema.Types.ObjectId,
+    type: String,
     required: true,
   },
   clubName: { type: String, required: true },

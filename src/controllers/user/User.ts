@@ -132,7 +132,7 @@ export const registerPassedUsers: Controller = async (req, res) => {
         if (!user) invalidUsers.push(userID);
         else {
           const newRegisteredClub: RegisteredClub = {
-            clubId: new Types.ObjectId(clubId),
+            clubId: clubId,
             role: initialRole,
             clubName: club?.name as string,
             moreColumns: acceptedUser.moreColumns,
@@ -167,7 +167,7 @@ export const registerClub: Controller = async (req, res) => {
       else {
         Club.findById(clubId).then(async (usingClub) => {
           const newRegisteredClub: RegisteredClub = {
-            clubId: new Types.ObjectId(clubId),
+            clubId: clubId,
             role: initialRole,
             clubName: usingClub?.name as string,
             moreColumns: moreColumns,
