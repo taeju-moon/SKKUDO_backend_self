@@ -5,7 +5,7 @@ import { Types } from 'mongoose';
 import { Role } from '../../types/common';
 import { RegisteredClub } from './../../types/user';
 import { Club } from '../../models/club/Club';
-import { registeredClubSchema } from '../../models/user/RegisteredClub';
+import { AppliedUser } from '../../models/apply/AppliedUser';
 
 export const getAllUsers: Controller = (req, res) => {
   User.find()
@@ -111,6 +111,48 @@ export const updateUser: Controller = (req, res) => {
           error: error.message,
         })
       );
+  }
+};
+
+export const registerPassedUsers: Controller = async (req, res) => {
+  const initialRole: Role = req.body.initialRole;
+  const clubId: string = req.params.clubId;
+  try {
+    const club = await Club.findById(clubId);
+    if (!club)
+      res
+        .status(404)
+        .json({ status: 'fail', error: '해당 동아리가 존재하지 않습니다.' });
+    else {
+      const acceptedUsers = await AppliedUser.find({ clubId, pass: true });
+      const invalidUsers: string[] = [];
+      acceptedUsers.forEach(async (acceptedUser) => {
+        const userID: string = acceptedUser.userID;
+        const user = await User.findOne({ userID });
+        if (!user) invalidUsers.push(userID);
+        else {
+          const newRegisteredClub: RegisteredClub = {
+            clubId: new Types.ObjectId(clubId),
+            role: initialRole,
+            clubName: club?.name as string,
+            moreColumns: acceptedUser.moreColumns,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          };
+          user.registeredClubs.set(clubId, newRegisteredClub);
+          user.save();
+        }
+      });
+      res.status(200).json({
+        status: 'success',
+        data: {
+          invalidUsers: invalidUsers,
+          acceptedUsers: acceptedUsers,
+        },
+      });
+    }
+  } catch (error: any) {
+    res.status(500).json({ status: 'fail', error });
   }
 };
 
