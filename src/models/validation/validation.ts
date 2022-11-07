@@ -1,7 +1,6 @@
 import { Schema, model, Model } from 'mongoose';
 import { Role, Method } from '../../types/common';
 import { Validation as ValidationInterface } from '../../types/validation';
-import validationRouter from './../../routes/validation';
 
 const roles: Role[] = ['회장', '부회장', '운영진', '부원'];
 
@@ -82,6 +81,22 @@ const validationSchema = new Schema<ValidationInterface>({
     },
     default: '운영진',
   },
+  appliedUserRead: {
+    type: String,
+    enum: {
+      values: roles,
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
+    },
+    default: '운영진',
+  },
+  appliedUserWrite: {
+    type: String,
+    enum: {
+      values: roles,
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
+    },
+    default: '운영진',
+  },
   validationRead: {
     type: String,
     enum: {
@@ -135,6 +150,9 @@ validationSchema.statics.findValidator = (
   } else if (uri.startsWith('/applies/applier')) {
     if (method === 'GET') return validation.applyRead;
     else return validation.applyWrite;
+  } else if (uri.startsWith('/applies/appliedUsers')) {
+    if (method == 'GET') return validation.appliedUserRead;
+    else return validation.appliedUserWrite;
   } else if (uri.startsWith('/todos/todos')) {
     if (method === 'GET') return validation.todoRead;
     else return validation.todoWrite;

@@ -13,6 +13,8 @@ export interface Validation {
   todoWrite: Role;
   applyRead: Role;
   applyWrite: Role;
+  appliedUserRead: Role;
+  appliedUserWrite: Role;
   validationRead: Role;
   validationWrite: '회장';
   clubRead: Role;

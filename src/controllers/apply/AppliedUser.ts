@@ -117,3 +117,16 @@ export const deleteAppliedUser: Controller = (req, res) => {
       res.status(400).json({ status: 'fail', error: error.message })
     );
 };
+
+export const deleteAppliedUsersByClubId: Controller = (req, res) => {
+  AppliedUser.deleteMany({ clubId: req.params.clubId })
+    .then((data) =>
+      res.status(200).json({
+        status: 'success',
+        data,
+        message:
+          '만약 지워지지 않은 경우 애초에 지원자가 없거나 clubId가 잘못되었을 수 있습니다.',
+      })
+    )
+    .catch((error) => res.status(500).json({ status: 'fail', error }));
+};
