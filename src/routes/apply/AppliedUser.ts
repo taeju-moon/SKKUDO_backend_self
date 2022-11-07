@@ -5,6 +5,7 @@ import {
   createAppliedUser,
   updateAppliedUser,
   deleteAppliedUser,
+  deleteAppliedUsersByClubId,
 } from '../../controllers/apply/AppliedUser';
 import {
   authByValidationTable,
@@ -27,5 +28,11 @@ AppliedUserRouter.post('/', authByValidationTable, createAppliedUser);
 AppliedUserRouter.patch('/:id', authByValidationTable, updateAppliedUser);
 
 AppliedUserRouter.delete('/:id', authByValidationTable, deleteAppliedUser);
+
+AppliedUserRouter.delete(
+  '/club/:clubId',
+  authByValidationTable,
+  deleteAppliedUsersByClubId
+);
 
 export default AppliedUserRouter;
