@@ -1,6 +1,7 @@
 import { Controller } from '../../types/common';
 import { AppliedUser } from '../../models/apply/AppliedUser';
 import { Club } from '../../models/club/Club';
+import { User as UserInterface } from '../../types/user';
 
 export const getAllAppliedUsers: Controller = (req, res) => {
   AppliedUser.find()
@@ -54,6 +55,13 @@ export const getAppliedUsersByClubId: Controller = (req, res) => {
         error: error.message,
       })
     );
+};
+
+export const getAppliedUsersByUserId: Controller = (req, res) => {
+  const authUser: UserInterface = req.body.authUser;
+  AppliedUser.find({ userID: authUser.userID })
+    .then((data) => res.status(200).json({ status: 'success', data }))
+    .catch((error) => res.status(500).json({ status: 'fail', error }));
 };
 
 export const createAppliedUser: Controller = (req, res) => {

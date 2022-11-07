@@ -2,6 +2,7 @@ import express from 'express';
 import {
   getAllAppliedUsers,
   getAppliedUsersByClubId,
+  getAppliedUsersByUserId,
   createAppliedUser,
   updateAppliedUser,
   deleteAppliedUser,
@@ -22,6 +23,8 @@ AppliedUserRouter.get(
   authByValidationTable,
   getAppliedUsersByClubId
 );
+
+AppliedUserRouter.get('/byUser', auth, getAppliedUsersByUserId);
 
 AppliedUserRouter.post('/', authByValidationTable, createAppliedUser);
 
