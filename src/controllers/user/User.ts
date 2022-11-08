@@ -273,7 +273,7 @@ export const deleteUser: Controller = (req, res) => {
 };
 
 export const updateUsercolumn: Controller = (req, res) => {
-  const { key, value } = req.body.key;
+  const { key, value } = req.body;
   const id = req.params.id;
   const clubId = req.params.clubId;
   User.findById(id).then((user) => {
