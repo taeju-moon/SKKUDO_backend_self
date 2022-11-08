@@ -274,9 +274,9 @@ export const deleteUser: Controller = (req, res) => {
 
 export const updateUsercolumn: Controller = (req, res) => {
   const { key, value } = req.body;
-  const id = req.params.id;
+  const userID = req.body.authUser.userID;
   const clubId = req.params.clubId;
-  User.findById(id).then((user) => {
+  User.findOne({ userID }).then((user) => {
     if (!user)
       res.status(404).json({ status: 'fail', error: 'user not found' });
     else {

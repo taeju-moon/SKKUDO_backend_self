@@ -10,6 +10,7 @@ import {
   registerPassedUsers,
   deregisterClub,
   updateRole,
+  updateUsercolumn,
 } from '../../controllers/user/User';
 import {
   auth,
@@ -48,6 +49,8 @@ UserRouter.patch(
   authByValidationTable,
   deregisterClub
 );
+
+UserRouter.patch('/club/moreColumn/:clubId', auth, updateUsercolumn);
 
 UserRouter.patch('/club/role/:id/:clubId', authByValidationTable, updateRole);
 
