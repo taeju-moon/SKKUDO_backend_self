@@ -12,8 +12,8 @@ const app = express();
 const corsOption = {
   origin:
     process.env.NODE_ENV === 'production'
-      ? 'http://54.180.30.58:3000'
-      : 'http://localhost:8000',
+      ? 'http://43.200.183.81:3000'
+      : 'http://localhost:3000',
   credentials: true,
 };
 
