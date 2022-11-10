@@ -1,7 +1,6 @@
 import { User } from '../../models/user/User';
 import { User as UserInterface } from '../../types/user';
 import { Controller } from '../../types/common';
-import { Types } from 'mongoose';
 import { Role } from '../../types/common';
 import { RegisteredClub } from './../../types/user';
 import { Club } from '../../models/club/Club';

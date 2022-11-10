@@ -122,9 +122,12 @@ userSchema.methods.addColumn = function (
 ) {
   const user = this;
   const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
-  registeredClub.moreColumns.push({ column, value });
-  user.registeredClubs.set(clubId, registeredClub);
-  user.save();
+  if (registeredClub) {
+    const obj = { column, value };
+    registeredClub.moreColumns.push(obj);
+    user.registeredClubs.set(clubId, registeredClub);
+    user.save();
+  }
 };
 
 userSchema.methods.updateValue = function (
@@ -134,11 +137,13 @@ userSchema.methods.updateValue = function (
 ) {
   const user = this;
   const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
-  registeredClub.moreColumns.forEach((column) => {
-    if (column.column.key === key) column.value = value;
-  });
-  user.registeredClubs.set(clubId, registeredClub);
-  user.save();
+  if (registeredClub) {
+    registeredClub.moreColumns.forEach((column) => {
+      if (column.column.key === key) column.value = value;
+    });
+    user.registeredClubs.set(clubId, registeredClub);
+    user.save();
+  }
 };
 
 userSchema.methods.updateColumn = function (
@@ -148,15 +153,16 @@ userSchema.methods.updateColumn = function (
 ) {
   const user = this;
   const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
-  registeredClub.moreColumns.forEach((column) => {
-    if (column.column.key === key) column.column = newColumn;
-  });
-  user.save();
+  if (registeredClub) {
+    registeredClub.moreColumns.forEach((column) => {
+      if (column.column.key === key) column.column = newColumn;
+    });
+    user.save();
+  }
 };
 
 userSchema.methods.deleteColumn = function (clubId: string, key: string) {
   const user = this;
-  console.log(user.registeredClubs.get(clubId)[key]);
   delete user.registeredClubs.get(clubId)[key];
   user.save();
 };
