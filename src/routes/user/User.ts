@@ -38,11 +38,23 @@ UserRouter.patch(
   registerPassedUsers
 );
 
-UserRouter.patch('/club/register/:id/:clubId', registerClub);
+UserRouter.patch(
+  '/club/register/:id/:clubId',
+  authByValidationTable,
+  registerClub
+);
 
-UserRouter.patch('/club/deregister/:id/:clubId', deregisterClub);
+UserRouter.patch(
+  '/club/deregister/:id/:clubId',
+  authByValidationTable,
+  deregisterClub
+);
 
-UserRouter.patch('/club/moreColumn/:clubId', auth, updateUsercolumn);
+UserRouter.patch(
+  '/club/moreColumn/:clubId',
+  authByValidationTable,
+  updateUsercolumn
+);
 
 UserRouter.patch('/club/role/:id/:clubId', authByValidationTable, updateRole);
 

@@ -161,9 +161,18 @@ userSchema.methods.updateColumn = function (
   }
 };
 
+interface moreColumn {
+  column: Column;
+  value: string;
+}
+
 userSchema.methods.deleteColumn = function (clubId: string, key: string) {
   const user = this;
-  delete user.registeredClubs.get(clubId)[key];
+  console.log(user.registeredClubs.get(clubId));
+  const registeredClub = user.registeredClubs.get(clubId);
+  registeredClub.moreColumns = registeredClub.moreColumns.filter(
+    (column: moreColumn) => column.column.key !== key
+  );
   user.save();
 };
 

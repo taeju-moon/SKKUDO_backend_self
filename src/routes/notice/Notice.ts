@@ -17,7 +17,7 @@ const NoticeRouter = express.Router();
 
 NoticeRouter.get('/', auth, authBySuperUser, getAllNotices);
 
-NoticeRouter.get('/club/:clubId', authByValidationTable, getNoticesByClubId);
+NoticeRouter.get('/club/:clubId', getNoticesByClubId);
 
 NoticeRouter.get('/:id', getOneNotice);
 

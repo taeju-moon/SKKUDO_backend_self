@@ -134,13 +134,24 @@ export const addClubUserColumn: Controller = async (req, res) => {
     if (!club)
       res.status(404).json({ status: 'fail', error: 'club not found' });
     else {
-      club.userColumns = [...club.userColumns, newColumn];
-      req.body.refinedUsers.forEach((user: any) => {
-        user.addColumn(clubId, newColumn, '');
+      let found = 0;
+      club.userColumns.forEach((item: Column) => {
+        if (item.key == newColumn.key) found++;
       });
-      club.save();
+      if (found) {
+        res.status(403).json({
+          status: 'fail',
+          error: '이미 존재하는 컬럼을 추가하려고 합니다.',
+        });
+      } else {
+        club.userColumns = [...club.userColumns, newColumn];
+        req.body.refinedUsers.forEach((user: any) => {
+          user.addColumn(clubId, newColumn, '');
+        });
+        club.save();
+        res.status(200).json({ status: 'success', data: club });
+      }
     }
-    res.status(200).json({ status: 'success', data: club });
   } catch (error: any) {
     res.status(400).json({ status: 'fail', error: error.message });
   }
@@ -155,14 +166,33 @@ export const updateClubUserColumn: Controller = async (req, res) => {
     if (!club)
       res.status(404).json({ status: 'fail', error: 'club not found' });
     else {
+      let found = 0;
       club.userColumns = club.userColumns.map((column) => {
-        if (column.key === key) return newColumn;
-        else return column;
+        if (column.key === key) {
+          found++;
+          return newColumn;
+        } else return column;
       });
-      req.body.refinedUsers.forEach((user: any) => {
-        user.updateColumn(clubId, key, newColumn);
+      let using = 0;
+      club.userColumns.forEach((column: Column) => {
+        if (column.key === newColumn.key) using++;
       });
-      club.save();
+      if (!found) {
+        res.status(404).json({ status: 'fail', error: 'column key not found' });
+      } else {
+        if (using) {
+          res.status(403).json({
+            status: 'fail',
+            error: '바꾸려는 Column의 key는 이미 사용중입니다.',
+          });
+        } else {
+          req.body.refinedUsers.forEach((user: any) => {
+            user.updateColumn(clubId, key, newColumn);
+          });
+          club.save();
+          res.status(200).json({ status: 'success', data: club });
+        }
+      }
     }
   } catch (error: any) {
     res.status(400).json({ status: 'fail', error: error.message });
@@ -184,6 +214,7 @@ export const deleteClubUserColumn: Controller = async (req, res) => {
         user.deleteColumn(clubId, key);
       });
       club.save();
+      res.status(200).json({ status: 'success', data: club });
     }
   } catch (error: any) {
     res.status(400).json({ status: 'fail', error: error.message });

@@ -1,9 +1,13 @@
 import { User } from '../models/user/User';
+import { User as UserInterface } from '../types/user';
 import { Middleware } from '../types/common';
 
 export const refineUsers: Middleware = (req, res, next) => {
-  User.find({ clubId: req.params.clubId })
-    .then((users) => {
+  User.find()
+    .then((users: UserInterface[]) => {
+      users = users.filter((user) =>
+        user.registeredClubs.get(req.params.clubId)
+      );
       if (users.length == 0)
         res.status(404).json({
           status: 'fail',

@@ -28,14 +28,10 @@ AppliedUserRouter.get('/byUser', auth, getAppliedUsersByUserId);
 
 AppliedUserRouter.post('/', createAppliedUser);
 
-AppliedUserRouter.patch('/:id', authByValidationTable, updateAppliedUser);
+AppliedUserRouter.patch('/:id', auth, updateAppliedUser);
 
 AppliedUserRouter.delete('/:id', authByValidationTable, deleteAppliedUser);
 
-AppliedUserRouter.delete(
-  '/club/:clubId',
-  authByValidationTable,
-  deleteAppliedUsersByClubId
-);
+AppliedUserRouter.delete('/club/:clubId', deleteAppliedUsersByClubId);
 
 export default AppliedUserRouter;
