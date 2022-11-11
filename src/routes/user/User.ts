@@ -17,6 +17,7 @@ import {
   authBySuperUser,
   authByValidationTable,
 } from '../../middlewares/auth';
+import { isApplierExist } from '../../middlewares/club';
 
 const UserRouter = express.Router();
 

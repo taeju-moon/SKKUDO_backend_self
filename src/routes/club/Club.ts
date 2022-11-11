@@ -16,6 +16,7 @@ import {
   authBySuperUser,
 } from '../../middlewares/auth';
 import { refineUsers } from '../../middlewares/refineUser';
+import { isApplierExist } from '../../middlewares/club';
 
 const ClubRouter = express.Router();
 
@@ -31,10 +32,28 @@ ClubRouter.patch('/accept/:clubId', auth, authBySuperUser, acceptClub);
 
 ClubRouter.delete('/:clubId', authByValidationTable, deleteClub);
 
-ClubRouter.post('/userColumn/:clubId', refineUsers, addClubUserColumn);
+ClubRouter.post(
+  '/userColumn/:clubId',
+  authByValidationTable,
+  refineUsers,
+  isApplierExist,
+  addClubUserColumn
+);
 
-ClubRouter.patch('/userColumn/:clubId', refineUsers, updateClubUserColumn);
+ClubRouter.patch(
+  '/userColumn/:clubId',
+  authByValidationTable,
+  refineUsers,
+  isApplierExist,
+  updateClubUserColumn
+);
 
-ClubRouter.delete('/userColumn/:clubId', refineUsers, deleteClubUserColumn);
+ClubRouter.delete(
+  '/userColumn/:clubId',
+  authByValidationTable,
+  refineUsers,
+  isApplierExist,
+  deleteClubUserColumn
+);
 
 export default ClubRouter;

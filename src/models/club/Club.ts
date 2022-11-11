@@ -1,8 +1,10 @@
 import { Club as ClubInterface, RecruitType } from '../../types/club';
+import { Applier } from './../apply/Applier';
 import { clubTypeSchema } from './ClubType';
 import { Location } from '../../types/common';
 import { Schema, model } from 'mongoose';
 import { columnSchema } from '../common/Column';
+import { isApplierExist } from '../../middlewares/club';
 
 const location: Location[] = ['인사캠', '자과캠'];
 const recruitType: RecruitType[] = ['상시모집', '정규모집'];
@@ -56,6 +58,25 @@ const clubSchema = new Schema<ClubInterface>({
 });
 
 const Club = model<ClubInterface>('Club', clubSchema);
+
+clubSchema.pre('save', function (next) {
+  if (this.isModified('userColumn')) {
+    console.log('here');
+    Applier.find({ clubId: this._id })
+      .then((data) => {
+        if (data)
+          next(
+            Error(
+              'Applier가 있는 상태에서 클럽의 userColumns를 변경할 수 없습니다.'
+            )
+          );
+        else next();
+      })
+      .catch((error) => next(Error(error)));
+  } else {
+    next();
+  }
+});
 
 clubSchema.pre(/^find/, function (next) {
   const copied: any = this;

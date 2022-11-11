@@ -1,9 +1,6 @@
 import { Controller } from '../../types/common';
 import { Club } from '../../models/club/Club';
-import { Types } from 'mongoose';
-import { User } from '../../models/user/User';
 import { Column } from '../../types/common';
-import { RegisteredClub as RegisteredClubInterface } from '../../types/user';
 
 export const getAllClubs: Controller = (req, res) => {
   //미들웨어로 accepted 된 것만 보여주기

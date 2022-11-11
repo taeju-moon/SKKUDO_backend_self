@@ -1,10 +1,11 @@
 import { User } from '../../models/user/User';
 import { User as UserInterface } from '../../types/user';
 import { Controller } from '../../types/common';
-import { Role } from '../../types/common';
+import { Role, Column } from '../../types/common';
 import { RegisteredClub } from './../../types/user';
 import { Club } from '../../models/club/Club';
 import { AppliedUser } from '../../models/apply/AppliedUser';
+import { isApplierExist } from '../../middlewares/club';
 
 export const getAllUsers: Controller = (req, res) => {
   User.find()
@@ -155,6 +156,33 @@ export const registerPassedUsers: Controller = async (req, res) => {
   }
 };
 
+interface moreColumnInterface {
+  column: Column;
+  value: string;
+}
+type moreColumnsType = moreColumnInterface[];
+
+const validatMoreColumns = (
+  moreColumns: moreColumnsType,
+  clubUserColumn: moreColumnsType
+): string => {
+  let fail = false;
+  let message = '';
+  clubUserColumn.forEach((column) => {
+    const searchingkey = column.column.key;
+    let found = 0;
+    moreColumns.forEach((item) => {
+      if (item.column.key === searchingkey) found = 1;
+    });
+    if (!found) {
+      fail = true;
+      message = `moreColumns: ${searchingkey}에 상응하는 값이 칼럼이 존재하지 않습니다.`;
+    }
+  });
+  if (!fail) return 'success';
+  else return message;
+};
+
 export const registerClub: Controller = async (req, res) => {
   const id = req.params.id;
   const clubId: string = req.params.clubId;
@@ -164,23 +192,31 @@ export const registerClub: Controller = async (req, res) => {
       if (!user)
         res.status(404).json({ status: 'fail', error: 'user not found' });
       else {
-        Club.findById(clubId).then(async (usingClub) => {
-          const newRegisteredClub: RegisteredClub = {
-            clubId: clubId,
-            role: initialRole,
-            clubName: usingClub?.name as string,
-            moreColumns: moreColumns,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          };
-          user.registeredClubs.set(clubId, newRegisteredClub);
-          user
-            .save()
-            .then((data) => res.status(200).json({ status: 'success', data }))
-            .catch((error) =>
-              res.status(500).json({ status: 'fail', error: error.message })
-            );
-        });
+        const validation: string = validatMoreColumns(
+          moreColumns,
+          user.registeredClubs.get(clubId)?.moreColumns as moreColumnsType
+        );
+        if (validation !== 'success')
+          res.status(404).json({ status: 'fail', error: validation });
+        else {
+          Club.findById(clubId).then(async (usingClub) => {
+            const newRegisteredClub: RegisteredClub = {
+              clubId: clubId,
+              role: initialRole,
+              clubName: usingClub?.name as string,
+              moreColumns: moreColumns,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            };
+            user.registeredClubs.set(clubId, newRegisteredClub);
+            user
+              .save()
+              .then((data) => res.status(200).json({ status: 'success', data }))
+              .catch((error) =>
+                res.status(500).json({ status: 'fail', error: error.message })
+              );
+          });
+        }
       }
     })
     .catch((error) =>
