@@ -13,6 +13,7 @@ const appliedUserSchema = new Schema<AppliedUserInterface>({
   userID: {
     type: String,
     required: true,
+    unique: true,
   },
   studentId: {
     type: String,
