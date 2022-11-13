@@ -20,6 +20,8 @@ export interface Validation {
   clubRead: Role;
   clubWrite: '회장';
   tagWrite: Role;
+  budgetRead: Role;
+  budgetWrite: Role;
   createdAt: Date;
   updatedAt: Date;
 }

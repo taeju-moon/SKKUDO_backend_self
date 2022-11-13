@@ -129,6 +129,22 @@ const validationSchema = new Schema<ValidationInterface>({
     },
     default: '운영진',
   },
+  budgetRead: {
+    type: String,
+    enum: {
+      values: roles,
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
+    },
+    default: '운영진',
+  },
+  budgetWrite: {
+    type: String,
+    enum: {
+      values: roles,
+      message: '회장, 부회장, 운영진, 부원 중 하나여야 합니다.',
+    },
+    default: '부회장',
+  },
   createdAt: Date,
   updatedAt: Date,
 });
@@ -156,6 +172,9 @@ validationSchema.statics.findValidator = (
   } else if (uri.startsWith('/todos/todos')) {
     if (method === 'GET') return validation.todoRead;
     else return validation.todoWrite;
+  } else if (uri.startsWith('/budgets/budgets')) {
+    if (method === 'GET') return validation.budgetRead;
+    else return validation.budgetWrite;
   } else if (uri.startsWith('/users')) {
     if (method === 'GET') return validation.userRead;
     else if (uri.startsWith('/users/club')) return validation.userColumnWrite;

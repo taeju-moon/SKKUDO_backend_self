@@ -7,11 +7,15 @@ import {
   updateBudget,
   deleteBudget,
 } from '../../controllers/budget/Budget';
-import { authByValidationTable } from '../../middlewares/auth';
+import {
+  auth,
+  authBySuperUser,
+  authByValidationTable,
+} from '../../middlewares/auth';
 
 const BudgetRouter = express.Router();
 
-BudgetRouter.get('/', getAllBudgets);
+BudgetRouter.get('/', auth, authBySuperUser, getAllBudgets);
 
 BudgetRouter.get('/club/:clubId', authByValidationTable, getBudgetsByClubId);
 

@@ -5,7 +5,7 @@ import { Role, Column } from '../../types/common';
 import { RegisteredClub } from './../../types/user';
 import { Club } from '../../models/club/Club';
 import { AppliedUser } from '../../models/apply/AppliedUser';
-import { isApplierExist } from '../../middlewares/club';
+
 
 export const getAllUsers: Controller = (req, res) => {
   User.find()

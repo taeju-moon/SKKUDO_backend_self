@@ -4,7 +4,7 @@ import { clubTypeSchema } from './ClubType';
 import { Location } from '../../types/common';
 import { Schema, model } from 'mongoose';
 import { columnSchema } from '../common/Column';
-import { isApplierExist } from '../../middlewares/club';
+
 
 const location: Location[] = ['인사캠', '자과캠'];
 const recruitType: RecruitType[] = ['상시모집', '정규모집'];
