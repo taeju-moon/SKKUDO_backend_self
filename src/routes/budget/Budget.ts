@@ -19,7 +19,7 @@ BudgetRouter.get('/', auth, authBySuperUser, getAllBudgets);
 
 BudgetRouter.get('/club/:clubId', authByValidationTable, getBudgetsByClubId);
 
-BudgetRouter.get('/:id', authByValidationTable, getOneBudget);
+BudgetRouter.get('/:id/:clubId', authByValidationTable, getOneBudget);
 
 BudgetRouter.post('/', authByValidationTable, createBudget);
 
