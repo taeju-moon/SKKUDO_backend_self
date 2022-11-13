@@ -20,7 +20,7 @@ export const getAllBudgets: Controller = (req, res) => {
 export const getBudgetsByClubId: Controller = (req, res) => {
   Budget.find({ clubId: req.params.clubId })
     .then((budgets) => {
-      if (!budgets) {
+      if (budgets.length === 0) {
         res.status(404).json({ status: 'fail', error: 'budgets not found' });
       }
       else {
