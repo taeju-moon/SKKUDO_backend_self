@@ -58,7 +58,6 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
   const clubId: string = req.params.clubId
     ? req.params.clubId
     : req.body.clubId;
-  console.log(clubId);
   if (!clubId) {
     res
       .status(500)
