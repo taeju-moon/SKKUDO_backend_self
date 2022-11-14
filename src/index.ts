@@ -1,10 +1,19 @@
 import express from 'express';
+import fs from 'fs';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 import cors from 'cors';
 
 dotenv.config();
+
+//서버에 uploads 파일이 없다면 새로 생성 (club의 image를 저장하는 폴더)
+try {
+  fs.readdirSync('uploads');
+}
+catch (error) {
+  fs.mkdirSync('uploads');
+}
 
 const app = express();
 

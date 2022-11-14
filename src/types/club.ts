@@ -11,6 +11,7 @@ export interface Club {
   type: ClubType;
   userColumns: Column[];
   //description
+  image: string;  //image가 저장된 경로
   recruitType: RecruitType;
   recruitStart: Date | null; //모집 시작일
   recruitEnd: Date | null; //모집 종료일
