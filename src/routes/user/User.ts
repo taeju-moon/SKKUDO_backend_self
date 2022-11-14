@@ -51,11 +51,7 @@ UserRouter.patch(
   deregisterClub
 );
 
-UserRouter.patch(
-  '/club/moreColumn/:clubId',
-  authByValidationTable,
-  updateUsercolumn
-);
+UserRouter.patch('/club/moreColumn/:clubId', auth, updateUsercolumn);
 
 UserRouter.patch('/club/role/:id/:clubId', authByValidationTable, updateRole);
 

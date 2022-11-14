@@ -6,7 +6,6 @@ import { RegisteredClub } from './../../types/user';
 import { Club } from '../../models/club/Club';
 import { AppliedUser } from '../../models/apply/AppliedUser';
 
-
 export const getAllUsers: Controller = (req, res) => {
   User.find()
     .then((users) =>
