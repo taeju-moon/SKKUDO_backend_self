@@ -180,7 +180,9 @@ validationSchema.statics.findValidator = (
     else if (uri.startsWith('/users/club')) return validation.userColumnWrite;
     else return validation.userWrite;
   } else {
-    if (uri.includes('tag') && method !== 'GET') return validation.tagWrite;
+    if (uri.includes('tag') && method === 'GET') return '부원';
+    else if (uri.includes('tag') && method !== 'GET')
+      return validation.tagWrite;
   }
   return '회장';
 };
