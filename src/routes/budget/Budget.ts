@@ -5,6 +5,7 @@ import {
   getOneBudget,
   createBudget,
   updateBudget,
+  updateBudgetRow,
   deleteBudget,
 } from '../../controllers/budget/Budget';
 import {
@@ -19,11 +20,13 @@ BudgetRouter.get('/', auth, authBySuperUser, getAllBudgets);
 
 BudgetRouter.get('/club/:clubId', authByValidationTable, getBudgetByClubId);
 
-BudgetRouter.get('/:id/:clubId', authByValidationTable, getOneBudget);
+BudgetRouter.get('/:id', authByValidationTable, getOneBudget);
 
 BudgetRouter.post('/', authByValidationTable, createBudget);
 
 BudgetRouter.patch('/:id', authByValidationTable, updateBudget);
+
+BudgetRouter.patch('/row/:id', authByValidationTable, updateBudgetRow);
 
 BudgetRouter.delete('/:id', authByValidationTable, deleteBudget);
 

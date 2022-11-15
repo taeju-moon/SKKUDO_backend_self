@@ -94,6 +94,31 @@ export const updateBudget: Controller = (req, res) => {
     );
 };
 
+export const updateBudgetRow: Controller = (req, res) => {
+  const id: string = req.params.id;
+  Budget.findById(id)
+    .then((budget) => {
+      if (!budget) {
+        res.status(400).json({ status: 'fail', error: 'budget not found' });
+      }
+      else {
+        budget.rows[req.body.line] = req.body.row;
+        budget
+          .save()
+          .then((data) => res.status(200).json({ status: 'success', data }))
+          .catch((error) =>
+            res.status(400).json({ status: 'fail', error: error.message })
+          );
+      }
+    })
+    .catch((error) =>
+      res.status(400).json({
+        status: 'fail',
+        error: error.message,
+      })
+    );
+};
+
 export const deleteBudget: Controller = (req, res) => {
   Budget.findByIdAndDelete(req.params.id)
     .then((data) => res.status(200).json({ status: 'success', data }))
