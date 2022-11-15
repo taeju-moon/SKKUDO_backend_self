@@ -1,7 +1,7 @@
 import express from 'express';
 import {
   getAllBudgets,
-  getBudgetsByClubId,
+  getBudgetByClubId,
   getOneBudget,
   createBudget,
   updateBudget,
@@ -17,7 +17,7 @@ const BudgetRouter = express.Router();
 
 BudgetRouter.get('/', auth, authBySuperUser, getAllBudgets);
 
-BudgetRouter.get('/club/:clubId', authByValidationTable, getBudgetsByClubId);
+BudgetRouter.get('/club/:clubId', authByValidationTable, getBudgetByClubId);
 
 BudgetRouter.get('/:id/:clubId', authByValidationTable, getOneBudget);
 
