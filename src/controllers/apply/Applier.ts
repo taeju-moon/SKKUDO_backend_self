@@ -131,7 +131,7 @@ export const updateApplier: Controller = (req, res) => {
 };
 
 export const deleteApplier: Controller = (req, res) => {
-  Applier.findByIdAndDelete(req.params.clubId)
+  Applier.findOneAndDelete({ clubId: req.params.clubId })
     .then((data) => res.status(200).json({ status: 'success', data }))
     .catch((error) =>
       res.status(400).json({ status: 'fail', error: error.message })
