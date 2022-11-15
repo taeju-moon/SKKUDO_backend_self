@@ -26,11 +26,22 @@ ClubRouter.get('/:clubId', getOneClub);
 
 ClubRouter.post('/', createClub);
 
-ClubRouter.patch('/:clubId', authByValidationTable, updateClub);
+ClubRouter.patch('/:clubId', isApplierExist, authByValidationTable, updateClub);
 
-ClubRouter.patch('/accept/:clubId', auth, authBySuperUser, acceptClub);
+ClubRouter.patch(
+  '/accept/:clubId',
+  isApplierExist,
+  auth,
+  authBySuperUser,
+  acceptClub
+);
 
-ClubRouter.delete('/:clubId', authByValidationTable, deleteClub);
+ClubRouter.delete(
+  '/:clubId',
+  isApplierExist,
+  authByValidationTable,
+  deleteClub
+);
 
 ClubRouter.post(
   '/userColumn/:clubId',

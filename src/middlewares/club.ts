@@ -7,7 +7,7 @@ export const isApplierExist: Middleware = (req, res, next) => {
     if (data) {
       res.status(403).json({
         status: 'fail',
-        error: '모집공고가 있는 상태에서 club의 유저컬럼을 변경할 수 없습니다.',
+        error: '모집공고가 있는 상태에서 club의 정보를 변경할 수 없습니다.',
       });
     } else {
       next();
