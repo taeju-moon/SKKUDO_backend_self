@@ -160,7 +160,7 @@ validationSchema.statics.findValidator = (
   } else if (uri.startsWith('/clubs/clubs')) {
     if (method === 'GET') return validation.clubRead;
     else return validation.clubWrite;
-  } else if (uri.startsWith('/validations/validations')) {
+  } else if (uri.startsWith('/validations')) {
     if (method === 'GET') return validation.validationRead;
     else return validation.validationWrite;
   } else if (uri.startsWith('/applies/applier')) {
