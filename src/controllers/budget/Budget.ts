@@ -17,14 +17,14 @@ export const getAllBudgets: Controller = (req, res) => {
     );
 };
 
-export const getBudgetsByClubId: Controller = (req, res) => {
+export const getBudgetByClubId: Controller = (req, res) => {
   Budget.find({ clubId: req.params.clubId })
     .then((budgets) => {
       if (budgets.length === 0) {
-        res.status(404).json({ status: 'fail', error: 'budgets not found' });
+        res.status(404).json({ status: 'fail', error: 'budget not found' });
       }
       else {
-        res.status(200).json({ status: 'success', data: budgets });
+        res.status(200).json({ status: 'success', data: budgets[0] });
       }
     })
     .catch((error) =>
@@ -53,11 +53,22 @@ export const getOneBudget: Controller = (req, res) => {
 
 export const createBudget: Controller = (req, res) => {
   const budget = new Budget(req.body);
-  budget
-    .save()
-    .then((data) => res.status(200).json({ status: 'success', data }))
+  Budget.find({ clubId: req.body.clubId })
+    .then((budgets) => {
+      if (budgets.length === 0) {
+        budget
+          .save()
+          .then((data) => res.status(200).json({ status: 'success', data }))
+          .catch((error) =>
+            res.status(400).json({ status: 'fail', error: error.message })
+          );
+      }
+      else {
+        res.status(400).json({ status: 'fail', error: "budget already exists." });
+      }
+    })
     .catch((error) =>
-      res.status(400).json({ status: 'fail', error: error.message })
+      res.status(500).json({ status: 'fail', error: error.message })
     );
 };
 
