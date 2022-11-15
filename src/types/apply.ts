@@ -14,6 +14,7 @@ export interface Applier {
 export interface AppliedUser {
   _id: Types.ObjectId;
   clubId: Types.ObjectId;
+  clubName: string;
   userID: string;
   studentId: string;
   name: string;
