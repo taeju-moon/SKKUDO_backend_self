@@ -6,15 +6,15 @@ import {
   createToDoTag,
   deleteToDoTag,
 } from '../../controllers/todo/ToDoTag';
-import { authByValidationTable } from '../../middlewares/auth';
+import { auth, authByValidationTable } from '../../middlewares/auth';
 
 const ToDoTagRouter = express.Router();
 
 ToDoTagRouter.get('/', getAllToDoTags);
 
-ToDoTagRouter.get('/club/:clubId', authByValidationTable, getToDoTagsByClubId);
+ToDoTagRouter.get('/club/:clubId', auth, getToDoTagsByClubId);
 
-ToDoTagRouter.get('/:id', authByValidationTable, getOneToDoTag);
+ToDoTagRouter.get('/:id', auth, getOneToDoTag);
 
 ToDoTagRouter.post('/', authByValidationTable, createToDoTag);
 
