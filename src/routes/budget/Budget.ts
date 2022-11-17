@@ -7,6 +7,7 @@ import {
   updateBudget,
   updateBudgetRow,
   deleteBudget,
+  deleteBudgetRow
 } from '../../controllers/budget/Budget';
 import {
   auth,
@@ -26,8 +27,10 @@ BudgetRouter.post('/', authByValidationTable, createBudget);
 
 BudgetRouter.patch('/:id', authByValidationTable, updateBudget);
 
-BudgetRouter.patch('/row/:id', authByValidationTable, updateBudgetRow);
+BudgetRouter.patch('/row/:line/:id', authByValidationTable, updateBudgetRow);
 
 BudgetRouter.delete('/:id', authByValidationTable, deleteBudget);
+
+BudgetRouter.delete('/row/:line/:id', authByValidationTable, deleteBudgetRow);
 
 export default BudgetRouter;
