@@ -32,6 +32,12 @@ const clubSchema = new Schema<ClubInterface>({
     required: true,
     ref: 'ClubType',
   },
+  userColumns: {
+    type: [columnSchema],
+  },
+  image: {
+    type: String,
+  },
   recruitType: {
     type: String,
     required: true,
@@ -39,9 +45,6 @@ const clubSchema = new Schema<ClubInterface>({
       values: recruitType,
       message: '모집유형은 정규모집 또는 상시모집입니다.',
     },
-  },
-  userColumns: {
-    type: [columnSchema],
   },
   recruitStart: {
     type: Date,

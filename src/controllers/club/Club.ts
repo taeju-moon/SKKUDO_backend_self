@@ -1,6 +1,7 @@
 import { Controller } from '../../types/common';
 import { Club } from '../../models/club/Club';
 import { Column } from '../../types/common';
+import fs from 'fs';
 
 export const getAllClubs: Controller = (req, res) => {
   //미들웨어로 accepted 된 것만 보여주기
@@ -216,4 +217,38 @@ export const deleteClubUserColumn: Controller = async (req, res) => {
   } catch (error: any) {
     res.status(400).json({ status: 'fail', error: error.message });
   }
+};
+
+export const uploadImage: Controller = async (req, res) => {
+  const id: string = req.params.clubId;
+  Club.findById(id)
+    .then((club) => {
+      if (!club) {
+        res.status(404).json({ status: 'fail', error: 'club not found' });
+      }
+      else {
+        if (!req.file) {
+          res.status(400).json({ status: 'fail', error: 'image not found' })
+        }
+        else {
+          if (club.image) {
+            try {
+              fs.unlinkSync(club.image);
+            }
+            catch (error) {
+              return res.status(400).json({ status: 'fail', error: 'image not deleted' })
+            }
+          }
+          club.image = req.file.path;
+          club.save();
+          res.status(200).json({ status: 'success', data: club });
+        }
+      }
+    })
+    .catch((error) =>
+      res.status(400).json({
+        status: 'fail',
+        error: error.message,
+      })
+    );
 };
