@@ -1,5 +1,6 @@
 import { User } from '../../models/user/User';
 import { User as UserInterface } from '../../types/user';
+import { Club as ClubInterface } from '../../types/club';
 import { Controller } from '../../types/common';
 import { Role, Column } from '../../types/common';
 import { RegisteredClub } from './../../types/user';
@@ -163,12 +164,12 @@ type moreColumnsType = moreColumnInterface[];
 
 const validatMoreColumns = (
   moreColumns: moreColumnsType,
-  clubUserColumn: moreColumnsType
+  clubUserColumn: Column[]
 ): string => {
   let fail = false;
   let message = '';
   clubUserColumn.forEach((column) => {
-    const searchingkey = column.column.key;
+    const searchingkey = column.key;
     let found = 0;
     moreColumns.forEach((item) => {
       if (item.column.key === searchingkey) found = 1;
@@ -186,6 +187,9 @@ export const registerClub: Controller = async (req, res) => {
   const id = req.params.id;
   const clubId: string = req.params.clubId;
   const { initialRole, moreColumns } = req.body;
+  const club: ClubInterface = (await Club.findOne({
+    _id: clubId,
+  })) as ClubInterface;
   User.findOne({ userID: id })
     .then((user) => {
       if (!user)
@@ -193,7 +197,7 @@ export const registerClub: Controller = async (req, res) => {
       else {
         const validation: string = validatMoreColumns(
           moreColumns,
-          user.registeredClubs.get(clubId)?.moreColumns as moreColumnsType
+          club.userColumns as Column[]
         );
         if (validation !== 'success')
           res.status(404).json({ status: 'fail', error: validation });

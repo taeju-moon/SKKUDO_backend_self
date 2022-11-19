@@ -30,9 +30,9 @@ UserRouter.get('/:id', getOneUser);
 
 UserRouter.post('/', createUser);
 
-UserRouter.patch('/:id', updateUser);
+UserRouter.patch('/:id', auth, updateUser);
 
-UserRouter.delete('/:id', deleteUser);
+UserRouter.delete('/:id', auth, deleteUser);
 
 UserRouter.patch(
   '/club/register/many/:clubId',
@@ -40,11 +40,7 @@ UserRouter.patch(
   registerPassedUsers
 );
 
-UserRouter.patch(
-  '/club/register/:id/:clubId',
-  authByValidationTable,
-  registerClub
-);
+UserRouter.patch('/club/register/:id/:clubId', registerClub);
 
 UserRouter.patch(
   '/club/deregister/:id/:clubId',
