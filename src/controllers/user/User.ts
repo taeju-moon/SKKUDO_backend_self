@@ -195,6 +195,7 @@ export const registerClub: Controller = async (req, res) => {
       if (!user)
         res.status(404).json({ status: 'fail', error: 'user not found' });
       else {
+        console.log(club.userColumns);
         const validation: string = validatMoreColumns(
           moreColumns,
           club.userColumns as Column[]
