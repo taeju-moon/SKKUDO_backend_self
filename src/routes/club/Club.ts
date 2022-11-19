@@ -40,13 +40,7 @@ ClubRouter.post('/', auth, createClub);
 
 ClubRouter.patch('/:clubId', isApplierExist, authByValidationTable, updateClub);
 
-ClubRouter.patch(
-  '/accept/:clubId',
-  isApplierExist,
-  auth,
-  authBySuperUser,
-  acceptClub
-);
+ClubRouter.patch('/accept/:clubId', auth, authBySuperUser, acceptClub);
 
 ClubRouter.delete(
   '/:clubId',
