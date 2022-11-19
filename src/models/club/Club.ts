@@ -5,7 +5,6 @@ import { Location } from '../../types/common';
 import { Schema, model } from 'mongoose';
 import { columnSchema } from '../common/Column';
 
-
 const location: Location[] = ['인사캠', '자과캠'];
 const recruitType: RecruitType[] = ['상시모집', '정규모집'];
 

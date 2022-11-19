@@ -1,6 +1,7 @@
 import { Controller } from '../../types/common';
 import { Club } from '../../models/club/Club';
 import { Column } from '../../types/common';
+import { User } from '../../models/user/User';
 import fs from 'fs';
 
 export const getAllClubs: Controller = (req, res) => {
@@ -68,14 +69,28 @@ export const updateClub: Controller = (req, res) => {
       status: 'fail',
       error: '유저 컬럼은 별도의 라우터를 사용하여 수정하세요.',
     });
+  const nameChanging = req.body.name;
   Club.findOneAndUpdate({ _id: id }, req.body)
     .then((data) => {
-      if (!data)
+      if (!data) {
         res.status(400).json({ status: 'fail', error: 'Club not found' });
-      res.status(200).json({
-        status: 'success',
-        data,
-      });
+      } else {
+        if (nameChanging) {
+          User.find({ clubId: id })
+            .then((users) => {
+              users.forEach((user) => user.updateClubName(id, req.body.name));
+              res.status(200).json({ status: 'success', data });
+            })
+            .catch((error) =>
+              res.status(500).json({ status: 'fail', error: error })
+            );
+        } else {
+          res.status(200).json({
+            status: 'success',
+            data,
+          });
+        }
+      }
     })
     .catch((error) =>
       res.status(400).json({
@@ -225,18 +240,17 @@ export const uploadImage: Controller = async (req, res) => {
     .then((club) => {
       if (!club) {
         res.status(404).json({ status: 'fail', error: 'club not found' });
-      }
-      else {
+      } else {
         if (!req.file) {
-          res.status(400).json({ status: 'fail', error: 'image not found' })
-        }
-        else {
+          res.status(400).json({ status: 'fail', error: 'image not found' });
+        } else {
           if (club.image) {
             try {
               fs.unlinkSync(club.image);
-            }
-            catch (error) {
-              return res.status(400).json({ status: 'fail', error: 'image not deleted' })
+            } catch (error) {
+              return res
+                .status(400)
+                .json({ status: 'fail', error: 'image not deleted' });
             }
           }
           club.image = req.file.path;
