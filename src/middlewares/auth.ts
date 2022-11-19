@@ -80,6 +80,7 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
     );
     User.findByToken(token, (err, user) => {
       if (err) throw Error(err);
+      req.body.authUser = user;
       User.findOne({ userID: user?.userID })
         .then((user) => {
           if (!user) {
@@ -95,6 +96,7 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
                 error: '동아리에 가입되어있지 않습니다.',
               });
             else {
+              req.body.registeredClubInfo = registeredClub;
               const result = Validation.validateUser(
                 validator,
                 registeredClub.role
@@ -113,4 +115,41 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
         );
     });
   }
+};
+
+export const canUpdateUserCell: Middleware = async (req, res, next) => {
+  const registeredClub: RegisteredClub = req.body.registeredClubInfo;
+  const updatingRole: Role = req.body.updatingRole;
+  const result = Validation.validateUser(updatingRole, registeredClub.role);
+  const user: UserInterface = req.body.authUser;
+  const userID: string = req.params.id;
+  if (result) {
+    if (user.userID === userID) {
+      res.status(403).json({
+        status: 'fail',
+        error: '자신의 역할을 스스로 수정할 수 없습니다.',
+      });
+    } else {
+      const user = await User.findOne({ userID });
+      const changingUserInfo: RegisteredClub = user?.findByClubId(
+        req.params.clubId
+      ) as RegisteredClub;
+      const result = Validation.validateUser(
+        changingUserInfo.role,
+        registeredClub.role
+      );
+      if (result && changingUserInfo.role !== registeredClub.role) {
+        next();
+      } else {
+        res.status(403).json({
+          status: 'fail',
+          error: `귀하는 ${registeredClub.role}이므로 ${changingUserInfo.role}이상의 권한의 유저를 변경할 수 없습니다..`,
+        });
+      }
+    }
+  } else
+    res.status(403).json({
+      status: 'fail',
+      error: `귀하는 ${registeredClub.role}이므로 ${updatingRole}이상의 권한을 부여할 수 없습니다.`,
+    });
 };

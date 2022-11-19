@@ -16,6 +16,7 @@ import {
   auth,
   authBySuperUser,
   authByValidationTable,
+  canUpdateUserCell,
 } from '../../middlewares/auth';
 import { isApplierExist } from '../../middlewares/club';
 
@@ -53,6 +54,11 @@ UserRouter.patch(
 
 UserRouter.patch('/club/moreColumn/:clubId', auth, updateUsercolumn);
 
-UserRouter.patch('/club/role/:id/:clubId', authByValidationTable, updateRole);
+UserRouter.patch(
+  '/club/role/:id/:clubId',
+  authByValidationTable,
+  canUpdateUserCell,
+  updateRole
+);
 
 export default UserRouter;
