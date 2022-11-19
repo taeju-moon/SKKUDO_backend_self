@@ -40,7 +40,11 @@ UserRouter.patch(
   registerPassedUsers
 );
 
-UserRouter.patch('/club/register/:id/:clubId', registerClub);
+UserRouter.patch(
+  '/club/register/:id/:clubId',
+  authByValidationTable,
+  registerClub
+);
 
 UserRouter.patch(
   '/club/deregister/:id/:clubId',
