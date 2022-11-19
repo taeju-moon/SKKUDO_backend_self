@@ -49,12 +49,21 @@ export const getOneToDo: Controller = (req, res) => {
 export const createToDo: Controller = (req, res) => {
   req.body.writer = req.body.authUser.name;
   const toDo = new ToDo(req.body);
-  toDo
-    .save()
-    .then((data) => res.status(200).json({ status: 'success', data }))
-    .catch((error) =>
-      res.status(400).json({ status: 'fail', error: error.message })
-    );
+  if (new Date(req.body.startTime) >= new Date(req.body.endTime)) {
+    res
+      .status(400)
+      .json({
+        status: 'fail',
+        error: '일정의 끝나는 시간이 시작 시간보다 앞설 수 없습니다.',
+      });
+  } else {
+    toDo
+      .save()
+      .then((data) => res.status(200).json({ status: 'success', data }))
+      .catch((error) =>
+        res.status(400).json({ status: 'fail', error: error.message })
+      );
+  }
 };
 
 export const updateToDo: Controller = (req, res) => {

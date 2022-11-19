@@ -26,7 +26,7 @@ AppliedUserRouter.get(
 
 AppliedUserRouter.get('/byUser', auth, getAppliedUsersByUserId);
 
-AppliedUserRouter.post('/', createAppliedUser);
+AppliedUserRouter.post('/', auth, createAppliedUser);
 
 AppliedUserRouter.patch('/:id', auth, updateAppliedUser);
 

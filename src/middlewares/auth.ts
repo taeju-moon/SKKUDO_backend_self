@@ -143,7 +143,7 @@ export const canUpdateUserCell: Middleware = async (req, res, next) => {
       } else {
         res.status(403).json({
           status: 'fail',
-          error: `귀하는 ${registeredClub.role}이므로 ${changingUserInfo.role}이상의 권한의 유저를 변경할 수 없습니다..`,
+          error: `귀하는 ${registeredClub.role}이므로 ${changingUserInfo.role}이상의 권한의 유저를 변경할 수 없습니다.`,
         });
       }
     }

@@ -22,11 +22,13 @@ import { isApplierExist } from '../../middlewares/club';
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: 'uploads/',  //저장할 image의 경로
-    filename: function(req, file, cb) { //저장할 image의 이름
+    destination: 'uploads/', //저장할 image의 경로
+    filename: function (req, file, cb) {
+      //저장할 image의 이름
       cb(null, Date.now() + '-' + file.originalname);
-    }
-}) });
+    },
+  }),
+});
 
 const ClubRouter = express.Router();
 
@@ -34,7 +36,7 @@ ClubRouter.get('/', getAllClubs);
 
 ClubRouter.get('/:clubId', getOneClub);
 
-ClubRouter.post('/', createClub);
+ClubRouter.post('/', auth, createClub);
 
 ClubRouter.patch('/:clubId', isApplierExist, authByValidationTable, updateClub);
 
@@ -77,6 +79,11 @@ ClubRouter.delete(
   deleteClubUserColumn
 );
 
-ClubRouter.post('/upload/:clubId', authByValidationTable, upload.single('image'), uploadImage);
+ClubRouter.post(
+  '/upload/:clubId',
+  authByValidationTable,
+  upload.single('image'),
+  uploadImage
+);
 
 export default ClubRouter;

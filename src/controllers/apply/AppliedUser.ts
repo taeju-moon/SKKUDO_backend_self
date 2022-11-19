@@ -65,35 +65,43 @@ export const getAppliedUsersByUserId: Controller = (req, res) => {
 };
 
 export const createAppliedUser: Controller = (req, res) => {
-  req.body.createdAt = new Date();
-  req.body.updatedAt = new Date();
-  const appliedUser = new AppliedUser(req.body);
-  const clubId = appliedUser.clubId.toString();
-  Club.findById(clubId)
-    .then((club) => {
-      if (!club) {
-        return res
-          .status(404)
-          .json({ status: 'fail', error: '존재하지 않는 동아리입니다.' });
-      } else {
-        appliedUser
-          .save()
-          .then((data) => {
-            return res.status(200).json({ status: 'success', data });
-          })
-          .catch((error) => {
-            return res
-              .status(400)
-              .json({ status: 'fail', error: error.message });
-          });
-      }
-    })
-    .catch((error) =>
-      res.status(400).json({
-        status: 'fail',
-        error: error.message,
+  const authUser = req.body.authUser;
+  const clubId = req.body.clubId;
+  const result = authUser.findByClubId(clubId);
+  if (result) {
+    res
+      .status(403)
+      .json({ status: 'fail', error: '동아리에 이미 가입되어있습니다.' });
+  } else {
+    req.body.createdAt = new Date();
+    req.body.updatedAt = new Date();
+    const appliedUser = new AppliedUser(req.body);
+    Club.findById(clubId)
+      .then((club) => {
+        if (!club) {
+          return res
+            .status(404)
+            .json({ status: 'fail', error: '존재하지 않는 동아리입니다.' });
+        } else {
+          appliedUser
+            .save()
+            .then((data) => {
+              return res.status(200).json({ status: 'success', data });
+            })
+            .catch((error) => {
+              return res
+                .status(400)
+                .json({ status: 'fail', error: error.message });
+            });
+        }
       })
-    );
+      .catch((error) =>
+        res.status(400).json({
+          status: 'fail',
+          error: error.message,
+        })
+      );
+  }
 };
 
 export const updateAppliedUser: Controller = (req, res) => {

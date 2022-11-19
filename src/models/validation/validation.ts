@@ -169,7 +169,7 @@ validationSchema.statics.findValidator = (
   } else if (uri.startsWith('/applies/appliedUsers')) {
     if (method == 'GET') return validation.appliedUserRead;
     else return validation.appliedUserWrite;
-  } else if (uri.startsWith('/todos/todos')) {
+  } else if (uri.startsWith('/todos/ToDos')) {
     if (method === 'GET') return validation.todoRead;
     else return validation.todoWrite;
   } else if (uri.startsWith('/budgets/budgets')) {
