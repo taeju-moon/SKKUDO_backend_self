@@ -153,3 +153,34 @@ export const canUpdateUserCell: Middleware = async (req, res, next) => {
       error: `귀하는 ${registeredClub.role}이므로 ${updatingRole}이상의 권한을 부여할 수 없습니다.`,
     });
 };
+
+export const canDeregisterUser: Middleware = async (req, res, next) => {
+  const userID = req.params.id;
+  const clubId = req.params.clubId;
+  const authUser = req.body.authUser;
+  const user = await User.findOne({ userID });
+  if (!user) {
+    res
+      .status(401)
+      .json({ status: 'fail', error: '삭제할 유저가 존재하지 않습니다' });
+    return;
+  }
+  const registeredClub: RegisteredClub | null = user.findByClubId(clubId);
+  const myClub: RegisteredClub | null = authUser.findByClubId(clubId);
+  if (!registeredClub || !myClub) {
+    res.status(401).json({
+      status: 'fail',
+      error: '삭제 대상 또는 접속 유저가 해당 동아리에 속하지 않습니다.',
+    });
+    return;
+  }
+  const result = Validation.validateUser(registeredClub.role, myClub.role);
+  if (!result || registeredClub.role === myClub.role) {
+    res.status(403).json({
+      status: 'fail',
+      error: `귀하는 ${myClub.role}이므로 ${registeredClub.role}이상의 유저를 탈퇴시킬 권한이 없습니다.`,
+    });
+  } else {
+    next();
+  }
+};
