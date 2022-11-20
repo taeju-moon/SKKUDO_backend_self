@@ -113,10 +113,12 @@ export const updateAppliedUser: Controller = (req, res) => {
         return res
           .status(400)
           .json({ status: 'fail', error: 'AppliedUser not found' });
-      res.status(200).json({
-        status: 'success',
-        data,
-      });
+      else {
+        res.status(200).json({
+          status: 'success',
+          data,
+        });
+      }
     })
     .catch((error) =>
       res.status(400).json({
