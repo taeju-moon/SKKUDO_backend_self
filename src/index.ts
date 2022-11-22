@@ -29,6 +29,7 @@ const corsOption = {
 app.use(cors(corsOption));
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static('uploads')); //uploads 폴더 접근
 
 //connect to MongoDB
 mongoose
