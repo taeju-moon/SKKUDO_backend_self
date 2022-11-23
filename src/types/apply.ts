@@ -19,6 +19,7 @@ export interface AppliedUser {
   studentId: string;
   name: string;
   major: string;
+  contact: string;
   moreColumns: {
     column: Column;
     value: String;
