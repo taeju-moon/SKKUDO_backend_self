@@ -36,6 +36,9 @@ const userSchema = new Schema<UserInterface>({
       message: '인사캠 또는 자과캠이어야 합니다.',
     },
   },
+  contact: {
+    type: String,
+  },
   registeredClubs: {
     type: Map,
     of: registeredClubSchema,
@@ -120,6 +123,16 @@ userSchema.methods.updateClubName = function (clubId: string, name: string) {
   const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
   if (registeredClub) {
     registeredClub.clubName = name;
+    user.registeredClubs.set(clubId, registeredClub);
+    user.save();
+  }
+};
+
+userSchema.methods.updateImage = function (clubId: string, image: string) {
+  const user = this;
+  const registeredClub: RegisteredClub = user.registeredClubs.get(clubId);
+  if (registeredClub) {
+    registeredClub.image = image;
     user.registeredClubs.set(clubId, registeredClub);
     user.save();
   }
@@ -215,6 +228,7 @@ interface UserMethods {
     callback: (error: any, user: UserInterface | null) => void
   ): void;
   updateClubName(clubId: string, name: string): void;
+  updateImage(clubId: string, image: string): void;
   addColumn(clubId: string, column: Column, value: string): void;
   updateValue(clubId: string, key: string, value: string): void;
   updateColumn(clubId: string, key: string, newColumn: Column): void;

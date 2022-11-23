@@ -255,7 +255,15 @@ export const uploadImage: Controller = async (req, res) => {
             }
           }
           club.image = req.file.path;
-          club.save();
+          User.find({ clubId: id })
+            .then((users) => {
+              users.forEach((user) => user.updateImage(id, club.image));
+              club.save();
+              res.status(200).json({ status: 'success', club });
+            })
+            .catch((error) =>
+              res.status(500).json({ status: 'fail', error: error })
+            );
         }
       }
     })

@@ -18,6 +18,10 @@ const registeredClubSchema = new Schema<RegisteredClubInterface>({
       message: '권한은 회장, 부회장, 운영진 또는 부원이어야 합니다.',
     },
   },
+  image: {
+    type: String,
+    default: '',
+  },
   moreColumns: {
     type: [{ column: columnSchema, value: String }],
     default: [],

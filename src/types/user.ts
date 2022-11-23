@@ -9,6 +9,7 @@ export interface RegisteredClub {
     column: Column;
     value: String;
   }[];
+  image: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -21,6 +22,7 @@ export interface User {
   userID: string;
   password: string;
   location: Location;
+  contact: string;
   registeredClubs: RegisteredClubs;
   name: string;
   major: string;

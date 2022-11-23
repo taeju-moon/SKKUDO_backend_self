@@ -136,6 +136,7 @@ export const registerPassedUsers: Controller = async (req, res) => {
             role: initialRole,
             clubName: club?.name as string,
             moreColumns: acceptedUser.moreColumns,
+            image: club?.image as string,
             createdAt: new Date(),
             updatedAt: new Date(),
           };
@@ -209,6 +210,7 @@ export const registerClub: Controller = async (req, res) => {
               role: initialRole,
               clubName: usingClub?.name as string,
               moreColumns: moreColumns,
+              image: usingClub?.image as string,
               createdAt: new Date(),
               updatedAt: new Date(),
             };
