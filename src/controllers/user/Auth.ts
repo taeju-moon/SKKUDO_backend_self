@@ -23,8 +23,6 @@ export const login: Controller = (req, res) => {
             if (user) {
               res
                 .cookie('x_auth', user.token, {
-                  sameSite: 'none',
-                  secure: true,
                   maxAge: 60 * 60 * 60 * 24,
                 })
                 .status(200)
