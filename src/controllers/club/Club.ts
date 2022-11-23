@@ -256,7 +256,6 @@ export const uploadImage: Controller = async (req, res) => {
           }
           club.image = req.file.path;
           club.save();
-          res.status(200).json({ status: 'success', data: club });
         }
       }
     })

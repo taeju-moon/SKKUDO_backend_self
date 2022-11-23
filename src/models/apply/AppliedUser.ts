@@ -32,6 +32,10 @@ const appliedUserSchema = new Schema<AppliedUserInterface>({
     type: String,
     required: true,
   },
+  contact: {
+    type: String,
+    required: true,
+  },
   moreColumns: {
     type: [
       {
