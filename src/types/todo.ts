@@ -14,6 +14,7 @@ export interface ToDo {
   clubId: Types.ObjectId;
   writer: string;
   title: string;
+  private: boolean;
   content: string;
   date: Date;
   startTime: Date;

@@ -21,9 +21,16 @@ export const getAllToDos: Controller = (req, res) => {
 export const getToDosByClubId: Controller = (req, res) => {
   ToDo.find({ clubId: req.params.clubId })
     .then((todos) => {
-      if (!todos)
+      if (!todos) {
         res.status(404).json({ status: 'fail', error: 'todos not found' });
-      res.status(200).json({ status: 'success', data: todos });
+        return;
+      }
+      if (req.body.private !== true) {
+        res.status(200).json({ status: 'success', data: todos });
+      } else {
+        const elems = todos.filter((todo) => todo.private === false);
+        res.status(200).json({ status: 'success', data: elems });
+      }
     })
     .catch((error) =>
       res.status(500).json({ status: 'fail', error: error.message })

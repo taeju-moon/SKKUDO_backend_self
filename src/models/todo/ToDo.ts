@@ -27,6 +27,10 @@ const toDoSchema = new Schema<ToDoInterface>({
     type: Date,
     required: true,
   },
+  private: {
+    type: Boolean,
+    default: false,
+  },
   endTime: {
     type: Date,
     required: true,

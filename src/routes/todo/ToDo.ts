@@ -12,12 +12,18 @@ import {
   auth,
   authBySuperUser,
 } from '../../middlewares/auth';
+import { canRetrievePrivateToDos } from '../../middlewares/todo';
 
 const ToDoRouter = express.Router();
 
 ToDoRouter.get('/', auth, authBySuperUser, getAllToDos);
 
-ToDoRouter.get('/club/:clubId', authByValidationTable, getToDosByClubId);
+ToDoRouter.get(
+  '/club/:clubId',
+  authByValidationTable,
+  canRetrievePrivateToDos,
+  getToDosByClubId
+);
 
 ToDoRouter.get('/:id', getOneToDo);
 
