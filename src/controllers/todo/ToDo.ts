@@ -25,7 +25,7 @@ export const getToDosByClubId: Controller = (req, res) => {
         res.status(404).json({ status: 'fail', error: 'todos not found' });
         return;
       }
-      if (req.body.private !== true) {
+      if (req.body.private === true) {
         res.status(200).json({ status: 'success', data: todos });
       } else {
         const elems = todos.filter((todo) => todo.private === false);
