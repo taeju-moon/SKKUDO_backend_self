@@ -6,8 +6,8 @@ import { Validation } from '../models/validation/validation';
 export const canRetrievePrivateToDos: Middleware = async (req, res, next) => {
   const user: any = req.body.authUser;
   const club: RegisteredClub = user.findByClubId(req.params.clubId);
-  const validation: any = await Validation.find({
-    clubId: req.params.clubID,
+  const validation: any = await Validation.findOne({
+    clubId: req.params.clubId,
   });
   const result: boolean = Validation.validateUser(
     validation.todoWrite,
