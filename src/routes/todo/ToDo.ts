@@ -12,7 +12,7 @@ import {
   auth,
   authBySuperUser,
 } from '../../middlewares/auth';
-import { canRetrievePrivateToDos } from '../../middlewares/todo';
+import { canRetrievePrivateToDos } from '../../middlewares/private';
 
 const ToDoRouter = express.Router();
 

@@ -6,11 +6,25 @@ import { Validation } from '../models/validation/validation';
 export const canRetrievePrivateToDos: Middleware = async (req, res, next) => {
   const user: any = req.body.authUser;
   const club: RegisteredClub = user.findByClubId(req.params.clubId);
-  const validation: any = await Validation.findOne({
+  const validation: ValidationInterface = (await Validation.findOne({
     clubId: req.params.clubId,
-  });
+  })) as ValidationInterface;
   const result: boolean = Validation.validateUser(
     validation.todoWrite,
+    club.role
+  );
+  req.body.private = result;
+  next();
+};
+
+export const canRetrievePrivateNotices: Middleware = async (req, res, next) => {
+  const user: any = req.body.authUser;
+  const club: RegisteredClub = user.findByClubId(req.params.clubId);
+  const validation: ValidationInterface = (await Validation.findOne({
+    clubId: req.params.clubId,
+  })) as ValidationInterface;
+  const result: boolean = Validation.validateUser(
+    validation.noticeWrite,
     club.role
   );
   req.body.private = result;

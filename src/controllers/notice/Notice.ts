@@ -1,6 +1,7 @@
 import { Controller } from '../../types/common';
 import { Notice } from '../../models/notice/Notice';
 import { read } from 'fs';
+import { Notice as NoticeInterface } from '../../types/notice';
 
 export const getAllNotices: Controller = (req, res) => {
   Notice.find()
@@ -21,9 +22,18 @@ export const getAllNotices: Controller = (req, res) => {
 export const getNoticesByClubId: Controller = (req, res) => {
   Notice.find({ clubId: req.params.clubId })
     .then((notices) => {
-      if (!notices)
+      if (!notices) {
         res.status(404).json({ status: 'fail', error: 'notices not found' });
-      res.status(200).json({ status: 'success', data: notices });
+        return;
+      }
+      if (req.body.private === true) {
+        res.status(200).json({ status: 'success', data: notices });
+      } else {
+        const filtered = notices.filter(
+          (item: NoticeInterface) => item.private !== true
+        );
+        res.status(200).json({ status: 'success', data: filtered });
+      }
     })
     .catch((error) =>
       res.status(500).json({ status: 'fail', error: error.message })

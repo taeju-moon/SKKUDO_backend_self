@@ -10,6 +10,7 @@ export interface NoticeTag {
 
 export interface Notice {
   _id: Types.ObjectId;
+  private: boolean;
   writer: string;
   clubId: String; //동아리 ID
   title: string; //제목

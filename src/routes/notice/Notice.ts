@@ -12,12 +12,18 @@ import {
   auth,
   authBySuperUser,
 } from '../../middlewares/auth';
+import { canRetrievePrivateNotices } from '../../middlewares/private';
 
 const NoticeRouter = express.Router();
 
 NoticeRouter.get('/', auth, authBySuperUser, getAllNotices);
 
-NoticeRouter.get('/club/:clubId', getNoticesByClubId);
+NoticeRouter.get(
+  '/club/:clubId',
+  authByValidationTable,
+  canRetrievePrivateNotices,
+  getNoticesByClubId
+);
 
 NoticeRouter.get('/:id', getOneNotice);
 

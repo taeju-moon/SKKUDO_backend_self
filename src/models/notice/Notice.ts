@@ -15,6 +15,7 @@ const noticeSchema = new Schema<NoticeInterface>({
     type: String,
     required: true,
   },
+  private: { type: Boolean, default: false },
   content: {
     type: String,
     required: true,

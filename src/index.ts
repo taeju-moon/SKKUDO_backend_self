@@ -20,7 +20,7 @@ const app = express();
 const corsOption = {
   origin:
     process.env.NODE_ENV === 'production'
-      ? 'http://www.skkudo.link'
+      ? 'https://www.skkudo.link'
       : 'http://localhost:3000',
   credentials: true,
 };
