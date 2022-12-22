@@ -43,14 +43,13 @@ UserRouter.patch(
 
 UserRouter.patch(
   '/club/register/:id/:clubId',
-  authByValidationTable,
+
   registerClub
 );
 
 UserRouter.patch(
   '/club/deregister/:id/:clubId',
-  authByValidationTable,
-  canDeregisterUser,
+
   deregisterClub
 );
 

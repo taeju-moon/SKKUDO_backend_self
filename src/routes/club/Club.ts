@@ -2,6 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import {
   getAllClubs,
+  getNotAcceptedClubs,
   getOneClub,
   createClub,
   updateClub,
@@ -34,6 +35,8 @@ const ClubRouter = express.Router();
 
 ClubRouter.get('/', getAllClubs);
 
+ClubRouter.get('/notAccepted', getNotAcceptedClubs);
+
 ClubRouter.get('/:clubId', getOneClub);
 
 ClubRouter.post('/', auth, createClub);
@@ -65,13 +68,7 @@ ClubRouter.patch(
   updateClubUserColumn
 );
 
-ClubRouter.delete(
-  '/userColumn/:clubId',
-  authByValidationTable,
-  refineUsers,
-  isApplierExist,
-  deleteClubUserColumn
-);
+ClubRouter.delete('/userColumn/:clubId', deleteClubUserColumn);
 
 ClubRouter.post(
   '/upload/:clubId',

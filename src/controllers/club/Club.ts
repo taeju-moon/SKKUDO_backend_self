@@ -21,6 +21,16 @@ export const getAllClubs: Controller = (req, res) => {
     );
 };
 
+export const getNotAcceptedClubs: Controller = (req, res) => {
+  Club.find({ accepted: false })
+    .then((clubs) => {
+      res.status(200).json({ status: 'success', data: clubs });
+    })
+    .catch((error) =>
+      res.status(500).json({ status: 'fail', error: error.message })
+    );
+};
+
 export const getOneClub: Controller = (req, res) => {
   const id: string = req.params.clubId;
   Club.findById(id)
