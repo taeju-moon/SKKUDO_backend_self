@@ -35,6 +35,7 @@ const ClubRouter = express.Router();
 
 ClubRouter.get('/', getAllClubs);
 
+//auth, authBySuperUser: superuser 권한에게만 허용
 ClubRouter.get('/notAccepted', getNotAcceptedClubs);
 
 ClubRouter.get('/:clubId', getOneClub);

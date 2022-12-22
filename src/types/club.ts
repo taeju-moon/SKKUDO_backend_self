@@ -7,7 +7,7 @@ export type RecruitType = '정규모집' | '상시모집';
 export interface Club {
   _id: Types.ObjectId;
   name: string;
-  initializer: User;
+  initializer: String;
   location: Location;
   accepted: boolean;
   type: ClubType;

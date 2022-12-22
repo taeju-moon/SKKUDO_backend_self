@@ -49,7 +49,7 @@ export const getOneClub: Controller = (req, res) => {
 
 export const createClub: Controller = (req, res) => {
   const club = new Club(req.body);
-  req.body.initializer = req.body.authUser;
+  club.initializer = req.body.authUser._id;
   club.accepted = false;
   club
     .save()

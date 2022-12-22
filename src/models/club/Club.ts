@@ -22,6 +22,11 @@ const clubSchema = new Schema<ClubInterface>({
       message: 'location은 인사캠 또는 자과캠만 올 수 있습니다.',
     },
   },
+  initializer: {
+    type: String,
+    required: true,
+    ref: 'User',
+  },
   accepted: {
     type: Boolean,
     default: false,
