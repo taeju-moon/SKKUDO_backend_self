@@ -1,7 +1,10 @@
 import { Controller } from '../../types/common';
-import { Club } from '../../models/club/Club';
+import { Club, clubSchema } from '../../models/club/Club';
+import { Validation } from '../../models/validation/validation';
 import { Column } from '../../types/common';
 import { User } from '../../models/user/User';
+import { RegisteredClub } from '../../types/user';
+import { Types } from 'mongoose';
 import fs from 'fs';
 
 export const getAllClubs: Controller = (req, res) => {
@@ -111,28 +114,47 @@ export const updateClub: Controller = (req, res) => {
     );
 };
 
-export const acceptClub: Controller = (req, res) => {
-  const id: string = req.params.clubId;
-  Club.findOneAndUpdate(
-    { _id: id },
-    {
-      accepted: true,
+export const acceptClub: Controller = async (req, res) => {
+  try {
+    const id: string = req.params.clubId;
+    const club = await Club.findOne({ _id: id });
+    //1. 동아리를 accept한다.
+    if (!club) {
+      res.status(404).json({ status: 'fail', error: 'Club not found' });
+      return;
     }
-  )
-    .then((data) => {
-      if (!data)
-        res.status(400).json({ status: 'fail', error: 'Club not found' });
-      res.status(200).json({
-        status: 'success',
-        data: '동아리의 등록이 완료되었습니다.',
-      });
-    })
-    .catch((error) =>
-      res.status(400).json({
+    club.accepted = true;
+    const initializer: string = club.initializer as string;
+    const user = await User.findOne({ id: initializer });
+    //2. 설립자를 회장으로 등록한다.
+    if (!user) {
+      res.status(404).json({
         status: 'fail',
-        error: error.message,
-      })
-    );
+        error:
+          '동아리의 설립자가 없습니다. DB에 corruption이 있을 수 있습니다.',
+      });
+      return;
+    }
+    const newRegisteredClub: RegisteredClub = {
+      clubId: id,
+      role: '회장',
+      clubName: club.name,
+      moreColumns: [],
+      image: '',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    user.registeredClubs.set(id, newRegisteredClub);
+    //해당 동아리의 ValidationTable을 만든다.
+    const validation = new Validation();
+    validation.clubId = new Types.ObjectId(req.params.clubId);
+    await validation.save();
+    await user.save();
+    await club.save();
+    res.status(200).json({ status: 'success', data: club });
+  } catch (error) {
+    res.status(500).json({ status: 'fail', error: error });
+  }
 };
 
 export const deleteClub: Controller = (req, res) => {
