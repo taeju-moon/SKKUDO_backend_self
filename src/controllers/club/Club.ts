@@ -78,11 +78,13 @@ export const updateClub: Controller = (req, res) => {
       status: 'fail',
       error: "can't accept while updating",
     });
-  if (req.body.userColumns)
+  if (req.body.userColumns) {
     res.status(403).json({
       status: 'fail',
       error: '유저 컬럼은 별도의 라우터를 사용하여 수정하세요.',
     });
+    return;
+  }
   const nameChanging = req.body.name;
   Club.findOneAndUpdate({ _id: id }, req.body)
     .then((data) => {
