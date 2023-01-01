@@ -69,7 +69,13 @@ ClubRouter.patch(
   updateClubUserColumn
 );
 
-ClubRouter.delete('/userColumn/:clubId', deleteClubUserColumn);
+ClubRouter.delete(
+  '/userColumn/:clubId',
+  authByValidationTable,
+  refineUsers,
+  isApplierExist,
+  deleteClubUserColumn
+);
 
 ClubRouter.post(
   '/upload/:clubId',
