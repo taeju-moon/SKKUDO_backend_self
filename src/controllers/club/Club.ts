@@ -208,11 +208,15 @@ export const updateClubUserColumn: Controller = async (req, res) => {
     const clubId: string = req.params.clubId;
     const key: string = req.body.key;
     const newColumn: Column = req.body.newColumn;
+    console.log(newColumn);
     const club = await Club.findOne({ _id: clubId });
     if (!club)
       res.status(404).json({ status: 'fail', error: 'club not found' });
     else {
       let found = 0;
+      club.userColumns.forEach((column: Column) => {
+        if (column.key === newColumn.key) using++;
+      });
       club.userColumns = club.userColumns.map((column) => {
         if (column.key === key) {
           found++;
@@ -220,9 +224,7 @@ export const updateClubUserColumn: Controller = async (req, res) => {
         } else return column;
       });
       let using = 0;
-      club.userColumns.forEach((column: Column) => {
-        if (column.key === newColumn.key) using++;
-      });
+
       if (!found) {
         res.status(404).json({ status: 'fail', error: 'column key not found' });
       } else {
