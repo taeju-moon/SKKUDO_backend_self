@@ -127,7 +127,7 @@ export const acceptClub: Controller = async (req, res) => {
     }
     club.accepted = true;
     const initializer: string = club.initializer as string;
-    const user = await User.findOne({ id: initializer });
+    const user = await User.findOne({ _id: initializer });
     //2. 설립자를 회장으로 등록한다.
     if (!user) {
       res.status(404).json({
