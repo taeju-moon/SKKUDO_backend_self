@@ -11,6 +11,7 @@ const userSchema = new Schema<UserInterface>({
   studentId: {
     type: String,
     required: true,
+    unique: true,
     minlength: 10,
     maxlength: 10,
     message: '10자리의 학번을 정확하게 입력하세요.',

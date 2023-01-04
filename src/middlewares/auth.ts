@@ -81,6 +81,9 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
     User.findByToken(token, (err, user) => {
       if (err) throw Error(err);
       req.body.authUser = user;
+      if (process.env.SUPER_USERS?.includes(user ? user.userID : '')) {
+        next();
+      }
       User.findOne({ userID: user?.userID })
         .then((user) => {
           if (!user) {
