@@ -72,6 +72,7 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
       status: 'fail',
       error: '해당 동아리는 인증 테이블을 가지고 있지 않습니다.',
     });
+    return;
   } else {
     const validator: Role = await Validation.findValidator(
       validation,
@@ -83,6 +84,7 @@ export const authByValidationTable: Middleware = async (req, res, next) => {
       req.body.authUser = user;
       if (process.env.SUPER_USERS?.includes(user ? user.userID : '')) {
         next();
+        return;
       }
       User.findOne({ userID: user?.userID })
         .then((user) => {
@@ -193,12 +195,10 @@ export const isOneSelf: Middleware = (req, res, next) => {
   if (user.userID === req.params.id) {
     next();
   } else {
-    res
-      .status(401)
-      .json({
-        status: 'fail',
-        error:
-          '동아리를 탈퇴하려는 인증 정보와 귀하의 인증 정보가 일치하지 않습니다.',
-      });
+    res.status(401).json({
+      status: 'fail',
+      error:
+        '동아리를 탈퇴하려는 인증 정보와 귀하의 인증 정보가 일치하지 않습니다.',
+    });
   }
 };
