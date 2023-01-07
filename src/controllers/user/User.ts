@@ -30,8 +30,10 @@ export const getUsersByClubId: Controller = (req, res) => {
       const refinedUsers: UserInterface[] = await users.filter((user) => {
         return user.registeredClubs.get(clubId);
       });
-      if (!refinedUsers)
+      if (!refinedUsers) {
         res.status(404).json({ status: 'fail', error: '404 not found' });
+        return;
+      }
       res.status(200).json({
         status: 'success',
         data: refinedUsers,
