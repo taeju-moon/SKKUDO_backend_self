@@ -33,11 +33,12 @@ export const getUsersByClubId: Controller = (req, res) => {
       if (!refinedUsers) {
         res.status(404).json({ status: 'fail', error: '404 not found' });
         return;
+      } else {
+        res.status(200).json({
+          status: 'success',
+          data: refinedUsers,
+        });
       }
-      res.status(200).json({
-        status: 'success',
-        data: refinedUsers,
-      });
     })
     .catch((error) =>
       res.status(400).json({ status: 'fail', error: error.message })
