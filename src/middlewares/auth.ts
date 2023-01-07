@@ -187,3 +187,18 @@ export const canDeregisterUser: Middleware = async (req, res, next) => {
     next();
   }
 };
+
+export const isOneSelf: Middleware = (req, res, next) => {
+  const user: UserInterface = req.body.authUser;
+  if (user.userID === req.params.id) {
+    next();
+  } else {
+    res
+      .status(401)
+      .json({
+        status: 'fail',
+        error:
+          '동아리를 탈퇴하려는 인증 정보와 귀하의 인증 정보가 일치하지 않습니다.',
+      });
+  }
+};

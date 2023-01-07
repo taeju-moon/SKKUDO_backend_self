@@ -18,6 +18,7 @@ import {
   authByValidationTable,
   canUpdateUserCell,
   canDeregisterUser,
+  isOneSelf,
 } from '../../middlewares/auth';
 import { isApplierExist } from '../../middlewares/club';
 
@@ -51,6 +52,20 @@ UserRouter.patch(
   '/club/deregister/:id/:clubId',
   authByValidationTable,
   canDeregisterUser,
+  deregisterClub
+);
+
+UserRouter.patch(
+  '/club/deregister/self/:id/:clubId',
+  auth,
+  isOneSelf,
+  deregisterClub
+);
+
+UserRouter.patch(
+  '/club/deregister/admin/:id/:clubId',
+  auth,
+  authBySuperUser,
   deregisterClub
 );
 
