@@ -46,12 +46,7 @@ ClubRouter.patch('/:clubId', isApplierExist, authByValidationTable, updateClub);
 
 ClubRouter.patch('/accept/:clubId', auth, authBySuperUser, acceptClub);
 
-ClubRouter.delete(
-  '/:clubId',
-  isApplierExist,
-  authByValidationTable,
-  deleteClub
-);
+ClubRouter.delete('/:clubId', auth, authBySuperUser, deleteClub);
 
 ClubRouter.post(
   '/userColumn/:clubId',
